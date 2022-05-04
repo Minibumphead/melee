@@ -1,0 +1,47 @@
+.root,
+.root_reverse {
+  color: "orange";
+  display: flex;
+  background-color: rgb(205, 205, 205);
+  height: 40px;
+}
+
+
+.root {
+  padding-left: 10px;
+}
+
+.root_reverse {
+  padding-right: 10px;
+  direction: rtl
+}
+
+
+
+.col,
+.col_short,
+.col_long {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.col_long {
+  margin-left: 10px;
+  margin-right: 10px;
+  flex: 4;
+  width: 0;
+}
+
+.col_short {
+  flex: 1;
+  max-width: 50px;
+}
+
+.edit_button {
+  height: 50px;
+  justify-content: center;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid rgb(66, 131, 36)
+}

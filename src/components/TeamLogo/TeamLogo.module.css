@@ -1,0 +1,23 @@
+.root {}
+
+
+.logo {
+	height: 100px;
+	width: 100%;
+}
+
+.hide {
+	display: none;
+}
+
+.display_selector {
+	border: 1px dashed black;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 15px 25px;
+}
+
+
+.hide_selector {
+	display: none;
+}

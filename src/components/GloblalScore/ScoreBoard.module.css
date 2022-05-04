@@ -1,0 +1,102 @@
+.root {
+
+	display: flex;
+	flex-direction: column;
+	border: 1px solid black;
+	border-radius: 4px;
+}
+
+
+.top {
+	display: flex;
+	background-color: green;
+	height: 30px;
+	/* border: 4px solid black; */
+}
+
+.stats {
+	/* border-left: 4px solid black; */
+	/* border-right: 4px solid black; */
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.stat_item {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.top .flex_small {
+	background-color: black;
+
+
+}
+
+.top .flex_large {
+	font-size: 20px;
+	font-weight: normal;
+	justify-content: center;
+}
+
+.bottom {
+	display: flex;
+}
+
+
+.flex_small {
+	flex: 1;
+	display: flex;
+}
+
+.flex_small .stats {
+	width: 100%;
+}
+
+.stats :last-child {
+	border-bottom: none;
+}
+
+
+.flex_large {
+	flex: 1;
+	text-align: center;
+	font-size: 100px;
+	font-weight: bold;
+	display: flex;
+}
+
+.bottom .flex_large {
+	background-color: lightblue;
+	justify-content: center;
+	align-items: center;
+
+}
+
+
+.match_score {
+	background: #a0a0a0;
+}
+
+
+.large_row,
+.small_row {
+	display: flex;
+	border: 1px solid black;
+}
+
+.small_row {
+	height: 45px;
+}
+
+.large_row .flex_large,
+.large_row .flex_small,
+.small_row .flex_small {
+	font-size: 20px;
+	justify-content: center;
+	align-items: center;
+	border-left: 1px solid;
+	padding: 4px 0px
+}

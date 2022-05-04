@@ -1,0 +1,8 @@
+.outer_section {
+	flex: 4;
+	max-width: 33%;
+}
+
+.inner_section {
+	flex: 7;
+}

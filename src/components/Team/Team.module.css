@@ -1,0 +1,47 @@
+.root {}
+
+.row {
+  display: flex;
+}
+
+
+
+.top,
+.top_reverse {
+  display: flex;
+  border-bottom: 5px solid black;
+}
+
+
+
+.top_reverse {
+  direction: rtl;
+}
+
+.left {
+  padding: 0 10px;
+  max-width: 50px;
+  flex: 1;
+}
+
+.right {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.team_name {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.col {
+  flex: 1;
+}
+
+.col_long {
+  flex: 3;
+  align-items: center;
+}
