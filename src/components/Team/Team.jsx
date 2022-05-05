@@ -5,45 +5,82 @@ import { STATUS_OPTIONS } from '../../data'
 import Player from '../Player/Player'
 import ReadyIndicator from '../ReadyIndicator/ReadyIndicator'
 import TeamLogo from '../TeamLogo/TeamLogo'
-import MeleeContext from '../../contexts/meleeContext'
+import SessionContext from '../../contexts/sessionContext'
 
 export default function Team({ team, dir }) {
-  const [match, setMatch] = useContext(MeleeContext)
+  const [session, setSession] = useContext(SessionContext)
 
-  const [players, setPlayers] = useState(team.players)
-  const [status, setStatus] = useState(team.status)
 
   const handleChange = (e) => {
-    var tempArray = [...players]
+    var tempArray = [...team.players]
     let changed_player = tempArray[parseInt(e.target.id - 1)]
     changed_player.name = e.target.value
-    players[e.target.id - 1] = changed_player
-    setPlayers(tempArray)
+    team.players[e.target.id - 1] = changed_player
+    if (team.id === 1) {
+      setSession(prevState => ({
+        ...prevState, team_one: {
+          ...prevState.team_one, players: tempArray
+        }
+      }))
+    } else {
+      setSession(prevState => ({
+        ...prevState, team_two: {
+          ...prevState.team_two, players: tempArray
+        }
+      }))
+    }
   }
 
 
-  const checkIfTeamIsReady = () => {
+  const checkIfTeamIsReady = (team) => {
     const tempArray = []
-    players.forEach(player => tempArray.push(player.name))
+    team.players.forEach(player => tempArray.push(player.name))
     for (let i = 0; i < tempArray.length; i++) {
       const last_player_in_temp_array = tempArray[tempArray.length - 1 - i]
       if (last_player_in_temp_array === "") {
         tempArray.pop()
-      } else {
-        tempArray[tempArray.length - 1 - i]
       }
     }
     if (tempArray.length === 8) {
-      setStatus(STATUS_OPTIONS[1])
-      return;
+      if (team.id == 1) {
+        setSession(prevState => ({
+          ...prevState, team_one: {
+            ...prevState.team_one, status: STATUS_OPTIONS[1]
+          }
+        }))
+
+      } else if (team.id === 2) {
+        setSession(prevState => ({
+          ...prevState, team_two: {
+            ...prevState.team_two, status: STATUS_OPTIONS[1]
+          }
+        }))
+      }
+
+    }
+  }
+  const checkForSessionStart = () => {
+    if (session.team_one.status === STATUS_OPTIONS[1] && session.team_two.status === STATUS_OPTIONS[1]) {
+      setSession(prevState => ({
+        ...prevState, status: "READY"
+      }))
+      console.log(`Both teams have status: === ${session.team_one.status}`)
     } else {
-      setStatus(STATUS_OPTIONS[0])
+      console.log('waiting for both teams to have same status')
     }
   }
 
   useEffect(() => {
-    checkIfTeamIsReady()
-  }, [players[7].name])
+    checkIfTeamIsReady(team)
+  }, [team.players])
+
+  useEffect(() => {
+    checkForSessionStart()
+  }, [team.status])
+
+
+
+
 
   return (
     < div className={styles.root} >
@@ -62,9 +99,9 @@ export default function Team({ team, dir }) {
         </div>
       </div>
       {
-        players.map(player => <Player key={player.id} dir={dir} player={player} handleChange={handleChange} status={status} />)
+        team.players.map(player => <Player key={player.id} dir={dir} player={player} handleChange={handleChange} status={session.status} />)
       }
-      <ReadyIndicator status={status} />
+      <ReadyIndicator status={team.status} />
 
 
     </div >)

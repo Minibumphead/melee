@@ -1,42 +1,26 @@
 .root {
-
+  min-width: 320px;
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
-  justify-content: space-between;
 }
 
-.scores_container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.player_one_section,
-.player_two_section {
-  display: flex;
-}
-
-.metadata {
-  width: 100%;
-}
-
-.meta_header {
+.table_header {
   text-align: center;
   font-size: 20px;
   font-weight: bold;
 }
 
-.meta_rounds {
+.table_body {
   text-align: center;
   font-size: 25px;
 }
 
-.round {
+.score {
   border-left: 1px solid black;
   border-right: 1px solid black;
   border-top: 1px solid black;
 }
 
-.meta_rounds :last-child {
+.table_body :last-child {
   border-bottom: 1px solid black;
 }

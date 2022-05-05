@@ -1,9 +1,11 @@
-.root {
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-
+.root,
+.next {
+  margin-top: 15px;
+  flex: 1;
   background: green;
-  margin-top: 25px;
-
+  min-height: 50px;
+  border-radius: 5px;
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
 }
