@@ -5,6 +5,9 @@
 }
 
 .table_header {
+  background-color: black;
+  color: white;
+  padding: 10px 0px;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
@@ -13,14 +16,37 @@
 .table_body {
   text-align: center;
   font-size: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: yellow;
 }
+
+.table_body input {
+  border: none;
+  outline: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+  width: 70px;
+  height: 45px;
+  margin: 2px 0px;
+  border-radius: 5px;
+  background: yellow;
+}
+
+.table_body input:focus {
+  border: 1px solid black;
+  box-sizing: border-box;
+  background: white;
+
+
+}
+
+
 
 .score {
   border-left: 1px solid black;
   border-right: 1px solid black;
   border-top: 1px solid black;
-}
-
-.table_body :last-child {
-  border-bottom: 1px solid black;
 }

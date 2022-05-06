@@ -27,9 +27,6 @@ export default function MeleeGame() {
 
   })
 
-  const handleClick = (e) => {
-    console.log(e.target.value)
-  }
 
 
   return (

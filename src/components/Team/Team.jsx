@@ -64,9 +64,9 @@ export default function Team({ team, dir }) {
       setSession(prevState => ({
         ...prevState, status: "READY"
       }))
-      console.log(`Both teams have status: === ${session.team_one.status}`)
+      // console.log(`Both teams have status: === ${session.team_one.status}`)
     } else {
-      console.log('waiting for both teams to have same status')
+      // console.log('waiting for both teams to have same status')
     }
   }
 

@@ -1,6 +1,12 @@
 .root {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+}
+
+.root .row .col :first-child {
+  color: green;
+  font-size: 25px;
 }
 
 .row {
@@ -20,5 +26,4 @@
   justify-content: center;
   height: 50px;
   border: 1px solid black;
-  border-radius: 8px;
 }
