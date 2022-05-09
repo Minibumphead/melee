@@ -1,5 +1,6 @@
 .root,
-.next {
+.next,
+.disabled {
   margin-top: 15px;
   flex: 1;
   background: green;
@@ -8,4 +9,10 @@
   font-size: 25px;
   font-weight: bold;
   color: white;
+  cursor: pointer
+}
+
+.disabled {
+  background-color: grey;
+  cursor: not-allowed
 }

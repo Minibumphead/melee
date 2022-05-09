@@ -1,0 +1,67 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.header {
+  border-bottom: 2px solid black;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  border-right: 2px solid black;
+}
+
+.match_container {
+  border: 2px solid black;
+  border-right: none;
+  border-bottom: none;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  margin: 50px;
+}
+
+.row {
+  border-right: 2px solid black;
+  display: flex;
+  flex: 1;
+  border-top: 2px solid black;
+}
+
+.score_section {
+  display: flex;
+}
+
+
+
+.col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border-right: 2px solid black;
+}
+
+
+
+
+
+.col :first-child {
+  border-top: 2px solid black;
+
+}
+
+
+
+.col_item {
+  border-bottom: 2px solid black
+}
+
+
+.row_item {
+  flex: 1;
+  padding: 5px;
+}
+
+.row :first-child {
+  border-right: 2px solid black;
+}

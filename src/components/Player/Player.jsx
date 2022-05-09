@@ -10,7 +10,7 @@ export default function Player({ player, dir, handleChange, status }) {
       value={player.name}
       id={player.id}
       onChange={(e) => handleChange(e)}
-    // disabled={(status !== STATUS_OPTIONS[0]) && (status !== STATUS_OPTIONS[1]) ? true : false} 
+      disabled={(status !== STATUS_OPTIONS[0]) && (status !== STATUS_OPTIONS[1]) ? true : false}
     />
     <div className={styles.col}>{player.scores.reduce((prev, curr) => prev + curr, 0)}</div>
     <div className={styles.col}>{Math.floor(Math.random() * 10)}</div>

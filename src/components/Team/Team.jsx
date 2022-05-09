@@ -42,7 +42,7 @@ export default function Team({ team, dir }) {
       }
     }
     if (tempArray.length === 8) {
-      if (team.id == 1) {
+      if (team.id === 1) {
         setSession(prevState => ({
           ...prevState, team_one: {
             ...prevState.team_one, status: STATUS_OPTIONS[1]
@@ -57,6 +57,20 @@ export default function Team({ team, dir }) {
         }))
       }
 
+    } else {
+      if (team.id === 1) {
+        setSession(prevState => ({
+          ...prevState, team_one: {
+            ...prevState.team_one, status: STATUS_OPTIONS[0]
+          }
+        }))
+      } else if (team.id === 2) {
+        setSession(prevState => ({
+          ...prevState, team_two: {
+            ...prevState.team_two, status: STATUS_OPTIONS[0]
+          }
+        }))
+      }
     }
   }
   const checkForSessionStart = () => {
@@ -66,6 +80,9 @@ export default function Team({ team, dir }) {
       }))
       // console.log(`Both teams have status: === ${session.team_one.status}`)
     } else {
+      setSession(prevState => ({
+        ...prevState, status: "SETUP"
+      }))
       // console.log('waiting for both teams to have same status')
     }
   }

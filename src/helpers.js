@@ -1,7 +1,13 @@
 
-export const trackMatchOutcomes = (currentPlayerOne, currentPlayerTwo, matches, setMatches) => {
+export const saveMatch = (
+  currentPlayerOne,
+  currentPlayerTwo,
+  matches,
+  setMatches,
+  matchId,
+  calledBy) => {
+  console.log(currentPlayerOne)
 
-  console.log('trackmatchoutcomes ran')
   const cleanScores = (scoreArray) => {
     const tempArr = []
     scoreArray.forEach(score => {
@@ -32,10 +38,10 @@ export const trackMatchOutcomes = (currentPlayerOne, currentPlayerTwo, matches, 
   const match = {
     id: currentPlayerOne.id,
     player_one: {
-      ...currentPlayerOne
+      ...currentPlayerOne, status: 1
     },
     player_two: {
-      ...currentPlayerTwo
+      ...currentPlayerTwo, status: 1
     },
     winner: winner,
     date: new Date()
@@ -43,6 +49,20 @@ export const trackMatchOutcomes = (currentPlayerOne, currentPlayerTwo, matches, 
   const tempMatches = [...matches]
   tempMatches[match.id - 1] = match
   setMatches(tempMatches)
+
+  const allScoresEntered = currentPlayerOne.scores.includes("-")
+    || currentPlayerTwo.scores.includes("-")
+    ? false : true
+  console.log(matchId.current)
+  if (matchId.current < 8 && calledBy === "next" && allScoresEntered) {
+    console.log('increased')
+    matchId.current += 1
+  } else if (matchId.current > 0 && calledBy === "prev") {
+    console.log('reduced matchId')
+    matchId.current -= 1
+  } else {
+    console.log('conditions for matchId update not fulfilled')
+  }
 }
 
 export function useLocalStorage(key, initialValue, useState) {
