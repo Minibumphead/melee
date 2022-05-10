@@ -7,7 +7,7 @@ import ReadyIndicator from '../ReadyIndicator/ReadyIndicator'
 import TeamLogo from '../TeamLogo/TeamLogo'
 import SessionContext from '../../contexts/sessionContext'
 
-export default function Team({ team, dir }) {
+export default function Team({ team, dir, matchId }) {
   const [session, setSession] = useContext(SessionContext)
 
 
@@ -78,12 +78,10 @@ export default function Team({ team, dir }) {
       setSession(prevState => ({
         ...prevState, status: "READY"
       }))
-      // console.log(`Both teams have status: === ${session.team_one.status}`)
     } else {
       setSession(prevState => ({
         ...prevState, status: "SETUP"
       }))
-      // console.log('waiting for both teams to have same status')
     }
   }
 
@@ -100,23 +98,14 @@ export default function Team({ team, dir }) {
 
 
   return (
-    < div className={styles.root} >
+    <div className={styles.root} >
       <TeamLogo />
 
-      <div className={dir === "ltr" ? styles.top : styles.top_reverse}>
-
-        <div className={styles.right}>
-          <div className={styles.team_name}>{team.name}</div>
-          <div className={styles.row}>
-            <div className={styles.left}>R</div>
-            <div className={styles.col_long}>Thrower</div>
-            <div className={styles.col}>S</div>
-            <div className={styles.col}>P</div>
-          </div>
-        </div>
-      </div>
       {
-        team.players.map(player => <Player key={player.id} dir={dir} player={player} handleChange={handleChange} status={session.status} />)
+        team.players.map(player =>
+
+
+          <Player key={player.id} dir={dir} player={player} handleChange={handleChange} status={session.status} />)
       }
       <ReadyIndicator status={team.status} />
 

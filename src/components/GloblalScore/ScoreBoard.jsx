@@ -4,20 +4,28 @@ import styles from './ScoreBoard.module.css'
 import ProgressButton from './../ProgressButton/ProgressButton'
 import SessionContext from '../../contexts/sessionContext'
 import ActivePlayer from './../ActivePlayer/ActivePlayer'
-import { useLocalStorage } from '../../helpers'
+import { useLocalStorage, saveMatch } from '../../helpers'
 
-export default function ScoreBoard() {
-  const matchId = useRef(0)
+
+export default function ScoreBoard({
+  currentPlayerOne,
+  setCurrentPlayerOne,
+  currentPlayerTwo,
+  setCurrentPlayerTwo,
+  matchId
+}) {
   const throwCountPlayerOne = useRef(0)
   const throwCountPlayerTwo = useRef(0)
   const rounds = [1, 2, 3, 4, 5]
   const [matches, setMatches] = useLocalStorage("matches", [], useState)
   const [session, setSession] = useContext(SessionContext)
   const inputSelected = useRef(-1)
-  const [currentPlayerOne, setCurrentPlayerOne] = useState(session.team_one.players[matchId.current - 1])
-  const [currentPlayerTwo, setCurrentPlayerTwo] = useState(session.team_two.players[matchId.current - 1])
+  const didMount = useRef(false)
+  // const [currentPlayerOne, setCurrentPlayerOne] = useState(session.team_one.players[matchId.current - 1])
+  // const [currentPlayerTwo, setCurrentPlayerTwo] = useState(session.team_two.players[matchId.current - 1])
 
   const handleScore = (score, player) => {
+
     // handle clicking buttons other than undo if players already have throwCount of 5
     if (throwCountPlayerOne.current === 5 && player.team_id === 1 && inputSelected.current === -1) {
       throwCountPlayerOne.current = 0
@@ -33,12 +41,23 @@ export default function ScoreBoard() {
         tempArray[inputSelected.current] = score
 
         setCurrentPlayerOne({ ...currentPlayerOne, scores: tempArray })
+        var temp_players = session.team_one.players
+        temp_players[matchId.current - 1] = { ...currentPlayerOne, scores: tempArray }
+        setSession(prevState => ({
+          ...prevState, team_one: { ...prevState.team_one, players: temp_players }
+        }))
       } else {
         tempArray[throwCountPlayerOne.current] = score
         throwCountPlayerOne.current += 1
 
         setCurrentPlayerOne({ ...currentPlayerOne, scores: tempArray })
+        var temp_players = session.team_one.players
+        temp_players[matchId.current - 1] = { ...currentPlayerOne, scores: tempArray }
+        setSession(prevState => ({
+          ...prevState, team_one: { ...prevState.team_one, players: temp_players }
+        }))
       }
+
 
 
       // handle throw of team two
@@ -51,6 +70,11 @@ export default function ScoreBoard() {
         throwCountPlayerTwo.current += 1
       }
       setCurrentPlayerTwo({ ...currentPlayerTwo, scores: tempArray })
+      var temp_players = session.team_two.players
+      temp_players[matchId.current - 1] = { ...currentPlayerTwo, scores: tempArray }
+      setSession(prevState => ({
+        ...prevState, team_two: { ...prevState.team_two, players: temp_players }
+      }))
     }
   }
 
@@ -60,7 +84,8 @@ export default function ScoreBoard() {
       if (player.team_id === 1) {
 
         if (throwCountPlayerOne.current === 0) {
-          console.log('undo for p1 not possible')
+
+          alert("To UNDO a score please select the score and click the Undo button")
         } else {
           throwCountPlayerOne.current -= 1
           var tempArr = [...player.scores]
@@ -79,7 +104,7 @@ export default function ScoreBoard() {
       if (player.team_id === 2) {
 
         if (throwCountPlayerTwo.current === 0) {
-          console.log('undo for p2 not possible')
+          alert("To UNDO a score please select the score and click the Undo button")
         } else {
 
           throwCountPlayerTwo.current -= 1
@@ -105,11 +130,31 @@ export default function ScoreBoard() {
   const handleClick = (e, player) => {
     if (e.target.value !== "Undo") {
       handleScore(e.target.name, player)
+
     } else {
       handleUndo(e.target, player)
     }
   }
 
+  useEffect(() => {
+    const calledBy = 'useEffect'
+    console.log('ran')
+    if (didMount.current) {
+      saveMatch(
+        session, setSession,
+        currentPlayerOne,
+        setCurrentPlayerOne,
+        currentPlayerTwo,
+        setCurrentPlayerTwo,
+        matches,
+        setMatches,
+        matchId,
+        calledBy
+      )
+    } else {
+      didMount.current = true
+    }
+  }, [throwCountPlayerOne.current, throwCountPlayerTwo.current, inputSelected.current])
 
 
 
@@ -117,17 +162,38 @@ export default function ScoreBoard() {
 
 
   useEffect(() => {
+    console.log('updated id')
     try {
-
       const matchData = JSON.parse(localStorage.getItem("matches")) !== null ?
-        JSON.parse(localStorage.getItem("matches"))[matchId.current - 1] :
+        matchId.current === 0 ? JSON.parse(localStorage.getItem("matches"))[matchId.current] :
+          JSON.parse(localStorage.getItem("matches"))[matchId.current - 1] :
         false
-      console.log(matchData)
       if (matchData) {
-        console.log('fetched')
-        console.log(matchData.id)
-        setCurrentPlayerOne(matchData.player_one)
-        setCurrentPlayerTwo(matchData.player_two)
+        const calledBy = "useEffect #2"
+        saveMatch(
+          session, setSession,
+          matchData.player_one,
+          setCurrentPlayerOne,
+          matchData.player_two,
+          setCurrentPlayerTwo,
+          matches,
+          setMatches,
+          matchId,
+          calledBy)
+        // setCurrentPlayerOne(matchData.player_one)
+        // setCurrentPlayerTwo(matchData.player_two)
+
+        // const temp_players_one = [...session.team_one.players]
+        // const temp_players_two = [...session.team_two.players]
+        // temp_players_one[matchId.current] = matchData.player_one
+        // temp_players_two[matchId.current] = matchData.player_two
+
+
+        // setSession(prevState => ({
+        //   ...prevState,
+        //   team_one: { ...prevState.team_one, players: temp_players_one },
+        //   team_two: { ...prevState.team_two, players: temp_players_two }
+        // }))
 
       } else {
         console.log('no prev match data from localstorage')
@@ -139,11 +205,11 @@ export default function ScoreBoard() {
 
     } catch (error) {
       console.log(error)
-      console.log("match not found")
 
     }
 
   }, [matchId.current])
+
 
 
 
@@ -158,26 +224,33 @@ export default function ScoreBoard() {
           <div className={styles.scores_container}>
             <div className={styles.player_one_section}>
               <ActivePlayer
+                matchId={matchId}
                 player={currentPlayerOne}
                 handleClick={handleClick}
                 currentPlayerOne={currentPlayerOne}
+                currentPlayerTwo={currentPlayerTwo}
                 setCurrentPlayerOne={setCurrentPlayerOne}
+                setCurrentPlayerTwo={setCurrentPlayerTwo}
                 inputSelected={inputSelected}
               />
             </div>
             <div className={styles.metadata}>
 
-              <div className={styles.meta_header}>{`M${matchId.current + 1}`}</div>
+              <div className={styles.meta_header}>{`M${matchId.current}`}</div>
               <div className={styles.meta_rounds}>
                 {rounds.map(round => <div key={round} className={styles.round}>{round}</div>)}
               </div>
             </div>
             <div className={styles.player_two_section}>
               <ActivePlayer
+
+                matchId={matchId}
                 player={currentPlayerTwo}
-                handleClick={handleClick}
+                currentPlayerOne={currentPlayerOne}
                 currentPlayerTwo={currentPlayerTwo}
+                setCurrentPlayerOne={setCurrentPlayerOne}
                 setCurrentPlayerTwo={setCurrentPlayerTwo}
+                handleClick={handleClick}
                 inputSelected={inputSelected}
               />
             </div>
@@ -193,7 +266,9 @@ export default function ScoreBoard() {
         throwCountPlayerOne={throwCountPlayerOne}
         throwCountPlayerTwo={throwCountPlayerTwo}
         currentPlayerOne={currentPlayerOne}
+        setCurrentPlayerOne={setCurrentPlayerOne}
         currentPlayerTwo={currentPlayerTwo}
+        setCurrentPlayerTwo={setCurrentPlayerTwo}
         matches={matches}
         setMatches={setMatches}
         matchId={matchId}

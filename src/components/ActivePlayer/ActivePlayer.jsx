@@ -1,29 +1,18 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import SessionContext from "../../contexts/sessionContext";
 import ScorePanel from "../ScorePanel.jsx/ScorePanel";
 import styles from './ActivePlayer.module.css';
 
 export default function ActivePlayer({ player,
+  setCurrentPlayerOne,
+  setCurrentPlayerTwo,
   handleClick,
   inputSelected,
+  matchId,
+  currentPlayerOne,
+  currentPlayerTwo
+
 }) {
-  const [session, setSession] = useContext(SessionContext)
-  const handleScoreChange = (e) => {
-    // alert("Please use the scoring Panel to enter scores")
-  }
-
-
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === "Enter") {
-        e.target.blur()
-      }
-    }
-    window.addEventListener('keypress', handleKeyPress)
-    return () => window.removeEventListener('keypress', handleKeyPress)
-  })
-
-
 
   return (
     <div className={styles.root} >
@@ -38,7 +27,7 @@ export default function ActivePlayer({ player,
               id={idx}
               className={styles.score}
               value={score[0]}
-              onChange={handleScoreChange}
+              onChange={() => { }}
               disabled={score === "-"}
               onClick={(e) => {
                 inputSelected.current = parseInt(e.target.id)
@@ -52,7 +41,15 @@ export default function ActivePlayer({ player,
             />)
         }
       </div>
-      <ScorePanel handleClick={handleClick} player={player} />
+      <ScorePanel
+        handleClick={handleClick}
+        player={player}
+        matchId={matchId}
+        currentPlayerOne={currentPlayerOne}
+        currentPlayerTwo={currentPlayerTwo}
+        setCurrentPlayerOne={setCurrentPlayerOne}
+        setCurrentPlayerTwo={setCurrentPlayerTwo}
+      />
     </div>)
 
 }

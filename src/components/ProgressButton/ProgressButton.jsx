@@ -5,6 +5,8 @@ import { saveMatch } from "../../helpers";
 import SessionContext from "../../contexts/sessionContext";
 
 export default function ProgressButton({
+  setCurrentPlayerOne,
+  setCurrentPlayerTwo,
   currentPlayerOne,
   currentPlayerTwo,
   matches,
@@ -35,8 +37,13 @@ export default function ProgressButton({
   const saveAndPrev = () => {
     const calledBy = "prev"
     saveMatch(
+      session, setSession,
       currentPlayerOne,
+      setCurrentPlayerOne,
+
       currentPlayerTwo,
+
+      setCurrentPlayerTwo,
       matches,
       setMatches,
       matchId,
@@ -49,8 +56,13 @@ export default function ProgressButton({
     const calledBy = "next"
 
     saveMatch(
+
+      session, setSession,
       currentPlayerOne,
+
+      setCurrentPlayerOne,
       currentPlayerTwo,
+      setCurrentPlayerTwo,
       matches,
       setMatches,
       matchId,
@@ -70,23 +82,24 @@ export default function ProgressButton({
 
       {matchId.current === 0 && (
         <button className={session.status === "READY" ? styles.root : styles.disabled} onClick={() => startMatch()}>
-          Start Match
+          Start
         </button>)
 
       }
 
-      <button
+      {matchId.current > 1 && (<button
         className={
           styles.root}
         onClick={() => saveAndPrev()}
       >
         View Previous Match
-      </button>
+      </button>)}
       {
         matchId.current === 8 && (
           <button className={styles.root} onClick={endSession}>End Session</button>
         )
       }
+      <a className={styles.standings} href="/view_result">View Standings</a>
       {/* <button className={styles.root} onClick={() => {
         console.log(JSON.parse(localStorage.getItem("matches")))
       }}>show local sotrage</button>

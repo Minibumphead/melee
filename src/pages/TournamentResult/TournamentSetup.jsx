@@ -25,7 +25,6 @@ export default function TournamentSetup() {
   }
 
   const isReady = () => {
-    console.log(teamOne)
     if (name.length > 2 && teamOne && teamTwo) {
       return true
     }
@@ -116,8 +115,7 @@ export default function TournamentSetup() {
           </select>
 
         </label>
-        <button className={styles.start} onClick={startTournament}>Start Tournament</button>
-        <button className={styles.start} onClick={generatePlayers}>test</button>
+        <button className={isReady() ? styles.start : styles.disabled} onClick={startTournament}>Start Tournament</button>
       </div>
     </div>
   </div>)

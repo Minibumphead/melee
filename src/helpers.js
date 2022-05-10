@@ -1,12 +1,16 @@
 
 export const saveMatch = (
+  session,
+  setSession,
   currentPlayerOne,
+  setCurrentPlayerOne,
   currentPlayerTwo,
+  setCurrentPlayerTwo,
   matches,
   setMatches,
   matchId,
-  calledBy) => {
-  console.log(currentPlayerOne)
+  calledBy,
+  overtimeWin = false) => {
 
   const cleanScores = (scoreArray) => {
     const tempArr = []
@@ -20,6 +24,17 @@ export const saveMatch = (
     return tempArr
   }
 
+  const getAllEights = (scores, val) => {
+    var indexes = []
+    for (let i = 0; i < scores.length; i++) {
+      if (scores[i] === val) {
+        indexes.push(i)
+      }
+    }
+    return indexes
+
+  }
+
 
   const cleaned_scores_team_one = cleanScores(currentPlayerOne.scores)
   const cleaned_scores_team_two = cleanScores(currentPlayerTwo.scores)
@@ -27,41 +42,121 @@ export const saveMatch = (
 
   const score_team_one = cleaned_scores_team_one.reduce((prev, curr) => parseInt(prev) + parseInt(curr), 0)
   const score_team_two = cleaned_scores_team_two.reduce((prev, curr) => parseInt(prev) + parseInt(curr), 0)
-  // determine Winner
-  const getWinner = () => {
-    if (score_team_one > score_team_two) return currentPlayerOne.team_id
-    else return currentPlayerTwo.team_id
+
+
+  console.log(score_team_one)
+
+  const calcTeamPoints = () => {
+    var temp_points_team_one = 0
+    var temp_points_team_two = 0
+    const eights_player_one = getAllEights(cleaned_scores_team_one, 8)
+    const eights_player_two = getAllEights(cleaned_scores_team_two, 8)
+
+
+    if (score_team_one > score_team_two || currentPlayerOne.overtimeWin) {
+      temp_points_team_one += 4
+    } else if (score_team_two > score_team_one || currentPlayerTwo.overtimeWin) {
+      temp_points_team_two += 4
+    }
+    if (eights_player_one.length === 1) {
+      temp_points_team_one += 1
+    } else if (eights_player_one.length === 2) {
+      temp_points_team_one += 2
+    }
+    if (eights_player_two.length === 1) {
+      temp_points_team_two += 1
+    } else if (eights_player_two.length === 2) {
+      temp_points_team_two += 2
+
+    }
+    if (score_team_one === 34) {
+
+      temp_points_team_one += 2
+    }
+    if (score_team_two === 34) {
+      temp_points_team_two += 2
+    }
+
+    return [temp_points_team_one, temp_points_team_two]
   }
 
-  const winner = getWinner()
+  const team_points = calcTeamPoints()
+
 
   const match = {
     id: currentPlayerOne.id,
     player_one: {
-      ...currentPlayerOne, status: 1
+      ...currentPlayerOne,
+      total_score: score_team_one,
+      team_points: team_points[0],
+      win: (score_team_one > score_team_two) || currentPlayerOne.overtimeWin,
+      overtime: score_team_one === score_team_two
     },
     player_two: {
-      ...currentPlayerTwo, status: 1
+      ...currentPlayerTwo,
+      total_score: score_team_two,
+      team_points: team_points[1],
+      win: (score_team_two > score_team_one) || currentPlayerTwo.overtimeWin,
+
+      overtime: score_team_one === score_team_two
     },
-    winner: winner,
     date: new Date()
   }
   const tempMatches = [...matches]
   tempMatches[match.id - 1] = match
   setMatches(tempMatches)
 
+  const temp_players_one = [...session.team_one.players]
+  temp_players_one[matchId.current - 1] = {
+    ...currentPlayerOne,
+    total_score: score_team_one,
+    team_points: team_points[0],
+    win: (score_team_one > score_team_two) || currentPlayerOne.overtimeWin,
+
+    overtime: score_team_one === score_team_two
+
+  }
+  const temp_players_two = [...session.team_two.players]
+  temp_players_two[matchId.current - 1] = {
+    ...currentPlayerTwo,
+    total_score: score_team_two,
+    team_points: team_points[1],
+    win: (score_team_one < score_team_two) || currentPlayerTwo.overtimeWin,
+
+    overtime: score_team_one === score_team_two
+  }
+  setCurrentPlayerOne({
+    ...currentPlayerOne,
+    total_score: score_team_one,
+    team_points: team_points[0],
+    win: (score_team_one > score_team_two) || currentPlayerOne.overtimeWin,
+    overtime: score_team_one === score_team_two
+  })
+  setCurrentPlayerTwo({
+    ...currentPlayerTwo,
+    total_score: score_team_two,
+    team_points: team_points[1],
+    win: (score_team_one < score_team_two) || currentPlayerTwo.overtimeWin,
+
+    overtime: score_team_one === score_team_two
+  })
+
+  setSession(prevSession => ({
+    ...prevSession, team_one: {
+      ...prevSession.team_one,
+      players: temp_players_one
+
+    }, team_two: { ...prevSession.team_two, players: temp_players_two }
+  }))
+
   const allScoresEntered = currentPlayerOne.scores.includes("-")
     || currentPlayerTwo.scores.includes("-")
     ? false : true
-  console.log(matchId.current)
   if (matchId.current < 8 && calledBy === "next" && allScoresEntered) {
-    console.log('increased')
     matchId.current += 1
   } else if (matchId.current > 0 && calledBy === "prev") {
-    console.log('reduced matchId')
     matchId.current -= 1
   } else {
-    console.log('conditions for matchId update not fulfilled')
   }
 }
 

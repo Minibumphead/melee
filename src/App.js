@@ -7,6 +7,7 @@ import Header from './components/Header/Header'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import styles from './App.css'
+import SessionContext from "./contexts/sessionContext";
 
 
 
@@ -14,7 +15,7 @@ const App = () => {
 
   return (
     <div className={styles.root}>
-      <Header />
+      {/* <Header /> */}
       <Router>
         <Routes>
 

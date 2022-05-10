@@ -27,3 +27,13 @@
   height: 50px;
   border: 1px solid black;
 }
+
+.win {
+  background-color: lightgreen;
+  padding: 15px
+}
+
+.lost {
+  background-color: lightcoral;
+  padding: 15px
+}

@@ -56,15 +56,15 @@ function Player(
   team_id,
   win,
   team_points,
-  status
+  total_score
 ) {
   this.id = id;
   this.name = name;
   this.scores = scores;
   this.team_id = team_id
-  this.status = status;
   this.win = win;
   this.team_points = team_points;
+  this.total_score = total_score
 }
 
 
@@ -72,15 +72,15 @@ function Player(
 export const generatePlayers = (team_id) => {
 
   const tempArr = new Array(8)
-  const name = ''
   const scores = ["-", "-", "-", "-", "-"]
   const win = false
   const team_points = 0
-  const status = -1
   const myId = team_id
+  const total_score = 0
   for (let i = 0; i < tempArr.length; i++) {
     const id = i + 1
-    tempArr[i] = new Player(id, name, scores, myId, win, team_points, status)
+    const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
+    tempArr[i] = new Player(id, name, scores, myId, win, team_points, total_score)
   }
   return tempArr
 }

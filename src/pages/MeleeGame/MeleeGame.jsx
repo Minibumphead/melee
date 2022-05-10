@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import styles from './MeleeGame.module.css'
 
@@ -21,6 +21,9 @@ export default function MeleeGame() {
   })
 
 
+  const matchId = useRef(0)
+  const [currentPlayerOne, setCurrentPlayerOne] = useState(session.team_one.players[matchId.current - 1])
+  const [currentPlayerTwo, setCurrentPlayerTwo] = useState(session.team_two.players[matchId.current - 1])
 
 
 
@@ -37,13 +40,31 @@ export default function MeleeGame() {
           <div className={styles.root}>
             <div className={styles.main}>
               <div className={styles.outer_section}>
-                <Team dir="ltr" team={session.team_one} />
+                <Team dir="ltr" team={session.team_one}
+                  matchId={matchId}
+                  currentPlayerOne={currentPlayerOne}
+                  currentPlayerTwo={currentPlayerTwo}
+                  setCurrentPlayerOne={setCurrentPlayerOne}
+                  setCurrentPlayerTwo={setCurrentPlayerTwo}
+                />
               </div>
               <div className={styles.inner_section}>
-                <Match tournament_name={state.tournament_name} />
+                <Match
+                  matchId={matchId}
+                  currentPlayerOne={currentPlayerOne}
+                  currentPlayerTwo={currentPlayerTwo}
+                  setCurrentPlayerOne={setCurrentPlayerOne}
+                  setCurrentPlayerTwo={setCurrentPlayerTwo}
+                  tournament_name={state.tournament_name} />
               </div>
               <div className={styles.outer_section}>
-                <Team dir="rtl" team={session.team_two} />
+                <Team dir="rtl" team={session.team_two}
+                  matchId={matchId}
+                  currentPlayerOne={currentPlayerOne}
+                  currentPlayerTwo={currentPlayerTwo}
+                  setCurrentPlayerOne={setCurrentPlayerOne}
+                  setCurrentPlayerTwo={setCurrentPlayerTwo}
+                />
               </div>
             </div>
           </div>

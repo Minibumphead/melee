@@ -1,10 +1,10 @@
 .root,
 .root_reverse {
-  color: "orange";
   display: flex;
-  background-color: rgb(205, 205, 205);
-  height: 40px;
+  background-color: lightgrey;
 }
+
+
 
 
 .root {
@@ -18,6 +18,7 @@
 
 
 
+
 .col,
 .col_short,
 .col_long {
@@ -27,15 +28,19 @@
 }
 
 .col_long {
-  margin-left: 10px;
-  margin-right: 10px;
   flex: 4;
   width: 0;
 }
 
+
+
 .col_short {
   flex: 1;
   max-width: 50px;
+}
+
+.col {
+  padding: 10px;
 }
 
 .edit_button {
@@ -44,4 +49,20 @@
   background-color: transparent;
   outline: none;
   border: 1px solid rgb(66, 131, 36)
+}
+
+.col_long input:focus {
+  outline: none;
+  background: lightblue;
+  color: black;
+  font-weight: bold;
+  box-sizing: border-box;
+  max-width: 180px;
+  font-size: 25px;
+
+}
+
+.large {
+  font-size: 20px;
+  font-weight: bold;
 }
