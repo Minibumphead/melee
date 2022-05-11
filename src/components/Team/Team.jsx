@@ -9,6 +9,7 @@ import SessionContext from '../../contexts/sessionContext'
 
 export default function Team({ team, dir, matchId }) {
   const [session, setSession] = useContext(SessionContext)
+  console.log(team)
 
 
   const handleChange = (e) => {
@@ -99,7 +100,7 @@ export default function Team({ team, dir, matchId }) {
 
   return (
     <div className={styles.root} >
-      <TeamLogo />
+      <TeamLogo team={team} />
 
       {
         team.players.map(player =>

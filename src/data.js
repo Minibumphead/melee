@@ -1,3 +1,11 @@
+const wolfPackImage = require('./assets/images/wolfpack.png')
+const axeEvengeresImage = require('./assets/images/axevengers.png')
+const legendsImage = require('./assets/images/legends.png')
+const noNameImage = require('./assets/images/no_name.png')
+const primalClubImage = require('./assets/images/primal_club.png')
+const soaringBladesImage = require('./assets/images/soaring_blades.png')
+const valkyrianSteelImage = require('./assets/images/valkyrian_steel.png')
+const wmImage = require('./assets/images/wm.png')
 export const months = [
   "January",
   "February",
@@ -87,181 +95,13 @@ export const generatePlayers = (team_id) => {
 
 
 export const teams = [
-  new Team(1, "./img", "Test Team", [], 0, "SETUP", 1),
-  new Team(2, "./img", "Test Team 2", [], 0, "SETUP", 1),
-  new Team(3, "./img", "Test Team 3", [], 0, "SETUP", 1),
-  new Team(4, "./img", "Test Team 4", [], 0, "SETUP", 1),
-  new Team(5, "./img", "Test Team 5", [], 0, "SETUP", 1)
+  new Team(1, wolfPackImage, "Wolfpack", [], 0, "SETUP", 1),
+  new Team(2, axeEvengeresImage, "Axevengers", [], 0, "SETUP", 1),
+  new Team(3, '', "Legends", [], 0, "SETUP", 1),
+  new Team(4, '', "Jackalope Axe Club", [], 0, "SETUP", 1),
+  new Team(5, primalClubImage, "Primal", [], 0, "SETUP", 1),
+  new Team(6, soaringBladesImage, "Soaring Blades", [], 0, "SETUP", 1),
+  new Team(7, valkyrianSteelImage, "Valkyrian Steel", [], 0, "SETUP", 1),
+  new Team(8, wmImage, "Widomakers", [], 0, "SETUP", 1),
 ]
 
-// export const team_one = {
-//   id: 1,
-//   graphic: '',
-//   name: "",
-//   players: [
-//     {
-//       id: 1,
-//       name: "Andreas",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     },
-//     {
-//       id: 2,
-//       name: "Marc",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     },
-//     {
-//       id: 3,
-//       name: "Jo",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     },
-//     {
-//       id: 4,
-//       name: "Mi",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     },
-//     {
-//       id: 5,
-//       name: "Fr",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     },
-//     {
-//       id: 6,
-//       name: "Ana",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     },
-//     {
-//       id: 7,
-//       name: "eli",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     },
-//     {
-//       id: 8,
-//       name: "Dan",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 1,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-//     }
-//   ],
-//   points: 0,
-//   status: STATUS_OPTIONS[0],
-//   result: ""
-// }
-// export const team_two = {
-//   id: 2,
-//   graphic: '',
-//   name: "",
-//   players: [
-//     {
-//       id: 1,
-//       name: "Renate",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     },
-//     {
-//       id: 2,
-//       name: "Pat",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     },
-//     {
-//       id: 3,
-//       name: "Tamy",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     },
-//     {
-//       id: 4,
-//       name: "Randy",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     },
-//     {
-//       id: 5,
-//       name: "Charl",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     },
-//     {
-//       id: 6,
-//       name: "Lucy",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     },
-//     {
-//       id: 7,
-//       name: "Elise",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     },
-//     {
-//       id: 8,
-//       name: "Lauren",
-//       scores: ["-", "-", "-", "-", "-"],
-//       team_id: 2,
-//       win: false,
-//       team_points: 0,
-//       status: -1
-
-//     }],
-//   points: 0,
-//   status: STATUS_OPTIONS[0],
-//   result: ""
-// }

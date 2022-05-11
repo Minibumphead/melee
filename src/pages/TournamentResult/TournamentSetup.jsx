@@ -91,7 +91,7 @@ export default function TournamentSetup() {
             onChange={handleSelect}
             value={teamOne}
           >
-            <option className={styles.disabled}>Select Team one</option>
+            <option className={styles.disabled}>Select Team 1</option>
             {
 
               teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
@@ -108,7 +108,7 @@ export default function TournamentSetup() {
 
           >
 
-            <option className={styles.disabled}>Select Team one</option>
+            <option className={styles.disabled}>Select Team 2</option>
             {
               teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
             }

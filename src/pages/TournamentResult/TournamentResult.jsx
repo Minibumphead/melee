@@ -112,6 +112,7 @@ export default function TournamentResult() {
       </div>)
 
   }
+
   return (<div className={styles.root}>
     {
       matches.map((match) => {
@@ -131,7 +132,13 @@ export default function TournamentResult() {
 
               <div className={styles.col_item + " " + styles.bold}>Total: {match.player_one.total_score}</div>
 
-              <div className={styles.col_item}>{match.player_one.win ? <img src={winIcon} alt="win" /> : <img src={lostIcon} alt="lost" />}</div>
+              <div className={styles.col_item}>{match.player_one.win ?
+
+                <div>
+                  <img src={winIcon} alt="win" />{match.player_one.overtime ? "OT" : null}
+                </div>
+
+                : <img src={lostIcon} alt="lost" />}</div>
             </div>
             <div className={styles.col}>
               {
@@ -140,7 +147,10 @@ export default function TournamentResult() {
               }
               <div className={styles.col_item + " " + styles.bold}>Total: {match.player_two.total_score}</div>
               <div className={styles.col_item}>{match.player_two.win ?
-                <img src={winIcon} alt="win" /> : <img src={lostIcon} alt="lost" />}</div>
+                <div >
+                  <img src={winIcon} alt="win" />{match.player_two.overtime ? "OT" : null}
+                </div>
+                : <img src={lostIcon} alt="lost" />}</div>
             </div>
           </div>
 
