@@ -1,8 +1,11 @@
 .root {
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  width: 90vw;
+  margin-left: 5vw;
+  border: 8px solid black;
 }
+
 
 .main {
   display: flex;

@@ -1,18 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react'
-import styles from './Team.module.css'
-import { STATUS_OPTIONS } from '../../data'
-
-import Player from '../Player/Player'
-import ReadyIndicator from '../ReadyIndicator/ReadyIndicator'
-import TeamLogo from '../TeamLogo/TeamLogo'
+import React, { useContext } from 'react'
 import SessionContext from '../../contexts/sessionContext'
+import styles from './Team.module.css'
 
-export default function Team({ team, dir, matchId }) {
-  const [session, setSession] = useContext(SessionContext)
-  console.log(team)
+
+export default function Team({ team }) {
+  // const [session, setSession] = useContext(SessionContext)
 
 
   const handleChange = (e) => {
+    e.preventDefault()
+    console.log(e.target.value)
     var tempArray = [...team.players]
     let changed_player = tempArray[parseInt(e.target.id - 1)]
     changed_player.name = e.target.value
@@ -33,83 +30,38 @@ export default function Team({ team, dir, matchId }) {
   }
 
 
-  const checkIfTeamIsReady = (team) => {
-    const tempArray = []
-    team.players.forEach(player => tempArray.push(player.name))
-    for (let i = 0; i < tempArray.length; i++) {
-      const last_player_in_temp_array = tempArray[tempArray.length - 1 - i]
-      if (last_player_in_temp_array === "") {
-        tempArray.pop()
-      }
-    }
-    if (tempArray.length === 8) {
-      if (team.id === 1) {
-        setSession(prevState => ({
-          ...prevState, team_one: {
-            ...prevState.team_one, status: STATUS_OPTIONS[1]
-          }
-        }))
+  const col1 = []
+  const col2 = []
 
-      } else if (team.id === 2) {
-        setSession(prevState => ({
-          ...prevState, team_two: {
-            ...prevState.team_two, status: STATUS_OPTIONS[1]
-          }
-        }))
-      }
-
-    } else {
-      if (team.id === 1) {
-        setSession(prevState => ({
-          ...prevState, team_one: {
-            ...prevState.team_one, status: STATUS_OPTIONS[0]
-          }
-        }))
-      } else if (team.id === 2) {
-        setSession(prevState => ({
-          ...prevState, team_two: {
-            ...prevState.team_two, status: STATUS_OPTIONS[0]
-          }
-        }))
-      }
-    }
-  }
-  const checkForSessionStart = () => {
-    if (session.team_one.status === STATUS_OPTIONS[1] && session.team_two.status === STATUS_OPTIONS[1]) {
-      setSession(prevState => ({
-        ...prevState, status: "READY"
-      }))
-    } else {
-      setSession(prevState => ({
-        ...prevState, status: "SETUP"
-      }))
-    }
-  }
-
-  useEffect(() => {
-    checkIfTeamIsReady(team)
-  }, [team.players])
-
-  useEffect(() => {
-    checkForSessionStart()
-  }, [team.status])
-
-
-
-
+  team.players.forEach(player => {
+    player.id % 2 === 0 ? col2.push(player) : col1.push(player)
+  })
 
   return (
     <div className={styles.root} >
-      <TeamLogo team={team} />
+      <div className={styles.col}>
+        {
+          col1.map(player =>
+            <div key={player.id}>
+              <label className={styles.player_label} htmlFor={`Player${player.id}`}>{`Player ${player.id}`}
+                <input type="text" onChange={handleChange} value={player.name} id={player.id} />
+              </label>
+            </div>
+          )
+        }
 
-      {
-        team.players.map(player =>
+      </div>
+      <div className={styles.col}>
+        {
+          col2.map(player =>
+            <div key={player.id}>
+              <label className={styles.player_label} htmlFor={`Player${player.id}`}>{`Player ${player.id}`}
+                <input type="text" onChange={handleChange} value={player.name} />
+              </label>
+            </div>
+          )
+        }
 
-
-          <Player key={player.id} dir={dir} player={player} handleChange={handleChange} status={session.status} />)
-      }
-      <ReadyIndicator status={team.status} />
-
-
+      </div>
     </div >)
 }

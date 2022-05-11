@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import styles from './ScoreBoard.module.css'
 
-import ProgressButton from './../ProgressButton/ProgressButton'
+import ProgressButton from '../ProgressButton/ProgressButton'
 import SessionContext from '../../contexts/sessionContext'
-import ActivePlayer from './../ActivePlayer/ActivePlayer'
+import ActivePlayer from '../ActivePlayer/ActivePlayer'
 import { useLocalStorage, saveMatch } from '../../helpers'
 
 
@@ -138,7 +138,6 @@ export default function ScoreBoard({
 
   useEffect(() => {
     const calledBy = 'useEffect'
-    console.log('ran')
     if (didMount.current) {
       saveMatch(
         session, setSession,
@@ -162,7 +161,6 @@ export default function ScoreBoard({
 
 
   useEffect(() => {
-    console.log('updated id')
     try {
       const matchData = JSON.parse(localStorage.getItem("matches")) !== null ?
         matchId.current === 0 ? JSON.parse(localStorage.getItem("matches"))[matchId.current] :

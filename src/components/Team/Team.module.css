@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  /* flex-direction: column; */
+}
+
+.player_label {
+  font-size: 25px;
+  display: flex;
+  margin-right: 25px;
+  align-items: center;
+}
+
+
+.player_label input {
+  margin-left: 25px;
+  padding: 15px;
+  border: 2px solid black;
+  font-size: 25px;
+}

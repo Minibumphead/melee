@@ -1,0 +1,41 @@
+.root,
+.root_reverse {
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.root {
+  padding-left: 25px;
+}
+
+.root_reverse {
+  direction: rtl;
+  padding-right: 25px;
+
+}
+
+.players_container {
+  display: flex;
+}
+
+.header_row,
+.data_row {
+  display: flex;
+}
+
+.row_item {
+  border: 1px solid black;
+  flex: 1;
+  padding: 8px 4px;
+  display: flex;
+  width: 60px;
+  justify-content: center;
+}
+
+.header_row {
+  font-size: 20px;
+  font-weight: bold;
+
+}

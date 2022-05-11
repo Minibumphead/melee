@@ -46,7 +46,7 @@ export const match = {
 }
 
 
-function Team(id, graphic, name, players, points, status, result) {
+function Team(id, graphic, name, players, points, status, result, matches_won) {
   this.id = id;
   this.graphic = graphic;
   this.name = name;
@@ -54,10 +54,11 @@ function Team(id, graphic, name, players, points, status, result) {
   this.points = points;
   this.status = status;
   this.result = result;
+  this.matches_won = matches_won
 }
 
 
-function Player(
+export function Player(
   id,
   name,
   scores,
@@ -77,31 +78,16 @@ function Player(
 
 
 
-export const generatePlayers = (team_id) => {
 
-  const tempArr = new Array(8)
-  const scores = ["-", "-", "-", "-", "-"]
-  const win = false
-  const team_points = 0
-  const myId = team_id
-  const total_score = 0
-  for (let i = 0; i < tempArr.length; i++) {
-    const id = i + 1
-    const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
-    tempArr[i] = new Player(id, name, scores, myId, win, team_points, total_score)
-  }
-  return tempArr
-}
 
 
 export const teams = [
-  new Team(1, wolfPackImage, "Wolfpack", [], 0, "SETUP", 1),
-  new Team(2, axeEvengeresImage, "Axevengers", [], 0, "SETUP", 1),
-  new Team(3, '', "Legends", [], 0, "SETUP", 1),
-  new Team(4, '', "Jackalope Axe Club", [], 0, "SETUP", 1),
-  new Team(5, primalClubImage, "Primal", [], 0, "SETUP", 1),
-  new Team(6, soaringBladesImage, "Soaring Blades", [], 0, "SETUP", 1),
-  new Team(7, valkyrianSteelImage, "Valkyrian Steel", [], 0, "SETUP", 1),
-  new Team(8, wmImage, "Widomakers", [], 0, "SETUP", 1),
+  new Team(1, wolfPackImage, "Wolfpack", [], 0, "SETUP", 1, 0),
+  new Team(2, axeEvengeresImage, "Axevengers", [], 0, "SETUP", 1, 0),
+  new Team(3, legendsImage, "Legends", [], 0, "SETUP", 1, 0),
+  new Team(4, noNameImage, "Jackalope Axe Club", [], 0, "SETUP", 1, 0),
+  new Team(5, primalClubImage, "Primal", [], 0, "SETUP", 1, 0),
+  new Team(6, soaringBladesImage, "Soaring Blades", [], 0, "SETUP", 1, 0),
+  new Team(7, valkyrianSteelImage, "Valkyrian Steel", [], 0, "SETUP", 1, 0),
+  new Team(8, wmImage, "Widomakers", [], 0, "SETUP", 1, 0),
 ]
-

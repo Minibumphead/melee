@@ -1,0 +1,31 @@
+.root {
+  display: flex;
+  padding: 25px 0px;
+}
+
+.outer_section {
+  flex: 3
+}
+
+.center {
+  text-align: center;
+  flex: 1
+}
+
+button {
+  padding: 15px;
+  border-radius: 4px;
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 25px;
+  font-size: 25px;
+  font-weight: bold;
+  border: none
+}
+
+
+button:hover {
+  background: lightgreen;
+  cursor: pointer;
+  transition: 800ms
+}

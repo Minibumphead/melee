@@ -1,3 +1,4 @@
+import { months, Player } from "./data"
 
 export const saveMatch = (
   session,
@@ -197,4 +198,50 @@ export function useLocalStorage(key, initialValue, useState) {
     }
   };
   return [storedValue, setValue];
+}
+
+export const formatDate = (date) => {
+  const month = months[date.getMonth()]
+  const day = date.getDate()
+  const appenditures = ["st", "nd", "rd", "th"]
+  if (day === 1) {
+    return `The ${day}${appenditures[0]} of ${month}`
+  } else if (day === 2) {
+    return `The ${day}${appenditures[1]} of ${month}`
+  } else if (day === 3) {
+    return `The ${day}${appenditures[2]} of ${month}`
+  }
+  else {
+    return `The ${day}${appenditures[3]} of ${month}`
+  }
+}
+
+
+export const getDisciplineFromId = (id) => {
+  if (id === 3 || id === 7) {
+    return `D${id}`
+  } else if (id === 4 || id === 8) {
+    return `BA${id / 4}`
+  } else if ([1, 2].includes(id)) {
+    return `H${id}`
+  } else if ([5, 6].includes(id)) {
+    return `H${id - 2}`
+  }
+}
+
+
+export const generatePlayers = (team_id) => {
+
+  const tempArr = new Array(10)
+  const scores = ["-", "-", "-", "-", "-"]
+  const win = false
+  const team_points = 0
+  const myId = team_id
+  const total_score = 0
+  for (let i = 0; i < tempArr.length; i++) {
+    const id = i + 1
+    const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
+    tempArr[i] = new Player(id, name, scores, myId, win, team_points, total_score)
+  }
+  return tempArr
 }

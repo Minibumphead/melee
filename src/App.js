@@ -1,7 +1,7 @@
 import React from "react";
 import MeleeGame from './pages/MeleeGame/MeleeGame'
 import TournamentResult from './pages/TournamentResult/TournamentResult'
-import TournamentSetup from "./pages/TournamentResult/TournamentSetup";
+import TournamentSetup from "./pages/TournamentSetup/TournamentSetup";
 import Header from './components/Header/Header'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -10,9 +10,7 @@ import styles from './App.css'
 import SessionContext from "./contexts/sessionContext";
 
 
-
 const App = () => {
-
   return (
     <div className={styles.root}>
       {/* <Header /> */}

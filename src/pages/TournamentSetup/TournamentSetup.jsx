@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './TournamentSetup.module.css'
-import { months, teams, generatePlayers } from './../../data.js'
+import { months, teams } from '../../data.js'
+import { generatePlayers } from '../../helpers'
+import Team from '../../components/Team/Team'
 
 
 export default function TournamentSetup() {
@@ -17,12 +19,17 @@ export default function TournamentSetup() {
 
   const handleSelect = (e) => {
     e.preventDefault()
-    if (e.target.name === "teamOne") {
-      setTeamOne(parseInt(e.target.value))
-    } else if (e.target.name === "teamTwo") {
-      setTeamTwo(e.target.value)
+    if (e.target.name === "teamOne" && e.target.value > 0) {
+      const default_players = generatePlayers(1)
+      const default_team = { ...teams[e.target.value - 1], players: default_players }
+      setTeamOne(default_team)
+    } else if (e.target.name === "teamTwo" && e.target.value > 0) {
+      const default_players = generatePlayers(2)
+      const default_team = { ...teams[e.target.value - 1], players: default_players }
+      setTeamTwo(default_team)
     }
   }
+
 
   const isReady = () => {
     if (name.length > 2 && teamOne && teamTwo) {
@@ -32,7 +39,6 @@ export default function TournamentSetup() {
 
 
   const startTournament = () => {
-
     localStorage.clear()
     const first_team = teams[teamOne - 1]
     const second_team = teams[teamTwo - 1]
@@ -42,7 +48,8 @@ export default function TournamentSetup() {
         state: {
           tournament_name: name,
           team_one: { ...first_team, id: 1, players: generatePlayers(1) },
-          team_two: { ...second_team, id: 2, players: generatePlayers(2) }
+          team_two: { ...second_team, id: 2, players: generatePlayers(2) },
+          date: new Date()
         }
       })
     } else {
@@ -68,7 +75,7 @@ export default function TournamentSetup() {
     }
   }
 
-
+  console.log(teamOne)
   return (<div className={styles.root}>
     <div className={styles.form_container}>
       <h2>Tournament Information</h2>
@@ -83,32 +90,42 @@ export default function TournamentSetup() {
           value={name}
         /></label>
       <div>
+
         <label htmlFor="teamOne">Team One
           <select
             name="teamOne"
             className={styles.select}
             type="select"
             onChange={handleSelect}
-            value={teamOne}
+            value={teamOne ? teamOne.id : 0}
           >
-            <option className={styles.disabled}>Select Team 1</option>
+            <option className={styles.disabled} value={0}>Select Team 1</option>
             {
 
               teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
             }
           </select>
         </label>
+        <div>
+
+          {teamOne ? <Team team={teamOne} /> : null}
+        </div>
+
+
+
+
+
         <label htmlFor="teamTwo">Team Two
           <select
             name="teamTwo"
             className={styles.select}
             type="select"
             onChange={handleSelect}
-            value={teamTwo}
+            value={teamTwo ? teamTwo.id : 0}
 
           >
 
-            <option className={styles.disabled}>Select Team 2</option>
+            <option className={styles.disabled} value={0}>Select Team 2</option>
             {
               teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
             }

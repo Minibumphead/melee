@@ -19,6 +19,7 @@ export default function TeamLogo({ team }) {
     inputRef.current.click()
   }
 
+
   return (
     <div className={styles.root}>
       {
@@ -29,5 +30,6 @@ export default function TeamLogo({ team }) {
       }
 
       <img className={styles.logo} src={team.graphic} alt="" onClick={() => handleReselect()} />
+      <div className={styles.name}>{team.name}</div>
     </div>)
 }
