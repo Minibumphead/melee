@@ -8,7 +8,7 @@ export default function Lineup({ players, dir }) {
     <div className={dir === "rtl" ? styles.root_reverse
       : styles.root} >
       <div className={styles.header_row}>
-        <div className={styles.row_item}>Round</div>
+        <div className={styles.row_item}>Discipline</div>
         <div className={styles.row_item}>Name</div>
         <div className={styles.row_item}>Score</div>
         <div className={styles.row_item}>Points</div>

@@ -19,15 +19,21 @@ export default function TournamentSetup() {
     setName(e.target.value)
   }
 
+  const t1 = teams[0]
+  console.log(t1.sumPoints())
   const handleSelect = (e) => {
     e.preventDefault()
     if (e.target.name === "teamOne" && e.target.value > 0) {
       const default_players = generatePlayers(1)
-      const default_team = { ...teams[e.target.value - 1], players: default_players, starter: true }
+      const default_team = teams[e.target.value - 1]
+      default_team.players = default_players
+      default_team.starter = true
       setTeamOne(default_team)
     } else if (e.target.name === "teamTwo" && e.target.value > 0) {
       const default_players = generatePlayers(2)
-      const default_team = { id: 2, ...teams[e.target.value - 1], players: default_players, starter: false }
+      const default_team = teams[e.target.value - 1]
+      default_team.players = default_players
+      default_team.starter = false
       setTeamTwo(default_team)
     }
   }
@@ -38,7 +44,6 @@ export default function TournamentSetup() {
     }
   }
 
-
   const startTournament = () => {
     localStorage.clear()
 
@@ -47,8 +52,8 @@ export default function TournamentSetup() {
         state: {
           status: "M1",
           tournament_name: name,
-          team_one: { ...teamOne, id: 1 },
-          team_two: { ...teamTwo, id: 2 },
+          team_one: teamOne,
+          team_two: teamTwo,
           date: new Date()
         }
       })

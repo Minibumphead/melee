@@ -5,8 +5,8 @@ import styles from './ActivePlayer.module.css';
 export default function ActivePlayer({ player,
   handleClick,
   inputSelected,
-  matchId,
 }) {
+
 
 
   return (
@@ -39,7 +39,6 @@ export default function ActivePlayer({ player,
       <ScorePanel
         handleClick={handleClick}
         player={player}
-        matchId={matchId}
       />
     </div>)
 

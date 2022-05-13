@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from './ScorePanel.module.css'
 import ScoringButton from "./ScoringButton";
-import { saveMatch } from "../../helpers";
 import SessionContext from "../../contexts/sessionContext";
 
 
-export default function ScorePanel({ handleClick, player, matchId }) {
+export default function ScorePanel({ handleClick, player }) {
   const [session, setSession] = useContext(SessionContext)
   const [callKill, setCallKill] = useState(false)
 
+  const isDualMatch = player.id === 3 || player.id === 4
 
 
   return (
@@ -43,7 +43,16 @@ export default function ScorePanel({ handleClick, player, matchId }) {
             <ScoringButton name="8 BL" value={8} handleClick={handleClick} player={player} status={session.status} />
             <ScoringButton name="8 BR" value={8} handleClick={handleClick} player={player} status={session.status} />
 
+
           </div>
+          {isDualMatch && (
+            <div className={styles.row}>
+              <ScoringButton name="9 UL" value={9} handleClick={handleClick} player={player} status={session.status} />
+              <ScoringButton name="9 UR" value={9} handleClick={handleClick} player={player} status={session.status} />
+              <ScoringButton name="9 BL" value={9} handleClick={handleClick} player={player} status={session.status} />
+              <ScoringButton name="9 BR" value={9} handleClick={handleClick} player={player} status={session.status} />
+            </div>
+          )}
           <div className={styles.row}>
             <ScoringButton name="0" value={0} handleClick={handleClick} player={player} status={session.status} />
             <ScoringButton name="Drop" value={"Drop"} handleClick={handleClick} player={player} status={session.status} />

@@ -4,115 +4,220 @@ import styles from './ScoreBoard.module.css'
 import ProgressButton from '../ProgressButton/ProgressButton'
 import SessionContext from '../../contexts/sessionContext'
 import ActivePlayer from '../ActivePlayer/ActivePlayer'
-import { useLocalStorage, saveSession, checkOvertime } from '../../helpers'
+import { useLocalStorage, saveSession, saveSessionAfterDual, checkOvertime } from '../../helpers'
 
 
 export default function ScoreBoard({ matchId, setMatchId }) {
   const inputSelected = useRef(-1)
   const throwCountPlayerOne = useRef(0)
+  const throwCountPartnerOne = useRef(0)
   const throwCountPlayerTwo = useRef(0)
+  const throwCountPartnerTwo = useRef(0)
+
   const [overtime, setOvertime] = useState(false)
   const [overtimeWinner, setOvertimeWinner] = useState(0)
   const [savedMatches, setSavedMatches] = useLocalStorage("matches", [], useState)
   const [savedSession, setSavedSession] = useLocalStorage("session", [], useState)
+  const [duals, setDuals] = useState(false)
 
   const [session, setSession] = useContext(SessionContext)
   const { team_one, team_two } = session
   const matchIndex = matchId.current - 1
   const p1 = team_one.players[matchIndex]
+  const p1_partner = team_one.players[matchIndex + 1]
   const p2 = team_two.players[matchIndex]
+  const p2_partner = team_two.players[matchIndex + 1]
+
+
 
   useEffect(() => {
+    if (matchId.current === 3) {
+      setDuals(true)
+    } else {
+      setDuals(false)
+    }
 
   }, [matchId.current])
 
 
   const handleScore = (e, player) => {
+    const isPartner = (player.id === 4 || player.id === 7)
+    const noInputSelected = inputSelected.current < 0
 
     if (player.team_id === 1) {
-      if (throwCountPlayerOne.current < 5 && inputSelected.current < 0) {
-        const tempArray = team_one.players
-        player.scores[throwCountPlayerOne.current] = e.target.name
-        tempArray[matchIndex] = player
-        setSession(prevSession => ({
-          ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
-        }))
-        throwCountPlayerOne.current += 1
-      } else if (inputSelected.current >= 0) {
-        const tempArray = team_one.players
-        player.scores[inputSelected.current] = e.target.name
-        tempArray[matchIndex] = player
-        setSession(prevSession => ({
-          ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
-        }))
-      } else if (inputSelected.current < 0 && throwCountPlayerOne.current === 5) {
-        alert(`${player.name} has already completed 5 throws. To edit existing throws, please select a score and update it with the button panel. Or use the Undo button to remove the last score.`)
+      if (isPartner) {
+        if (throwCountPartnerOne.current < 5 && noInputSelected) {
+          const tempArray = team_one.players
+          player.scores[throwCountPartnerOne.current] = e.target.name
+          tempArray[matchIndex + 1] = player
+          setSession(prevSession => ({
+            ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
+          }))
+          throwCountPartnerOne.current += 1
+        } else if (!noInputSelected) {
 
-      } else {
-        console.log('unhandled event for team one')
+          const tempArray = team_one.players
+          player.scores[inputSelected.current] = e.target.name
+          tempArray[matchIndex + 1] = player
+          setSession(prevSession => ({
+            ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
+          }))
+        } else if (inputSelected.current < 0 && throwCountPartnerOne.current === 5) {
+
+          alert(`${player.name} has already completed 5 throws. To edit existing throws, please select a score and update it with the button panel. Or use the Undo button to remove the last score.`)
+
+        }
+      }
+      if (!isPartner) {
+        if (throwCountPlayerOne.current < 5 && noInputSelected) {
+          const tempArray = team_one.players
+          player.scores[throwCountPlayerOne.current] = e.target.name
+          tempArray[matchIndex] = player
+          setSession(prevSession => ({
+            ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
+          }))
+
+          throwCountPlayerOne.current += 1
+        } else if (!noInputSelected) {
+          const tempArray = team_one.players
+          player.scores[inputSelected.current] = e.target.name
+          tempArray[matchIndex] = player
+          setSession(prevSession => ({
+            ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
+          }))
+        } else if (inputSelected.current < 0 && throwCountPlayerOne.current === 5) {
+          alert(`${player.name} has already completed 5 throws. To edit existing throws, please select a score and update it with the button panel. Or use the Undo button to remove the last score.`)
+
+        }
       }
     }
+
 
     if (player.team_id === 2) {
-      if (throwCountPlayerTwo.current < 5 && inputSelected.current < 0) {
-        const tempArray = team_two.players
-        player.scores[throwCountPlayerTwo.current] = e.target.name
-        tempArray[matchIndex] = player
-        setSession(prevSession => ({
-          ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
-        }))
-        throwCountPlayerTwo.current += 1
-      }
-      else if (inputSelected.current >= 0) {
-        const tempArray = team_two.players
-        player.scores[inputSelected.current] = e.target.name
-        tempArray[matchIndex] = player
-        setSession(prevSession => ({
-          ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
-        }))
-      } else if (inputSelected.current < 0 && throwCountPlayerTwo.current === 5) {
-        alert(`${player.name} has already completed 5 throws. 
-      To edit existing throws, please select a score and update
-       it with the button panel. Or use the Undo button to remove
-        the last score.`)
+      if (isPartner) {
+        if (throwCountPartnerTwo.current < 5 && noInputSelected) {
+          const tempArray = team_two.players
+          player.scores[throwCountPartnerTwo.current] = e.target.name
+          tempArray[matchIndex + 1] = player
+          setSession(prevSession => ({
+            ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
+          }))
+          throwCountPartnerTwo.current += 1
+        } else if (!noInputSelected) {
 
-      } else {
-        console.log('unhandled event for team 2')
+          const tempArray = team_two.players
+          player.scores[inputSelected.current] = e.target.name
+          tempArray[matchIndex + 1] = player
+          setSession(prevSession => ({
+            ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
+          }))
+        } else if (noInputSelected && throwCountPartnerTwo.current === 5) {
+
+          alert(`${player.name} has already completed 5 throws. To edit existing throws, please select a score and update it with the button panel. Or use the Undo button to remove the last score.`)
+
+        }
+      }
+      if (!isPartner) {
+        if (throwCountPlayerTwo.current < 5 && noInputSelected) {
+          const tempArray = team_two.players
+          player.scores[throwCountPlayerTwo.current] = e.target.name
+          tempArray[matchIndex] = player
+          setSession(prevSession => ({
+            ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
+
+          }))
+
+          throwCountPlayerTwo.current += 1
+        } else if (!noInputSelected) {
+          const tempArray = team_two.players
+          player.scores[inputSelected.current] = e.target.name
+          tempArray[matchIndex] = player
+          setSession(prevSession => ({
+            ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
+          }))
+        } else if (inputSelected.current < 0 && throwCountPlayerTwo.current === 5) {
+          alert(`${player.name} has already completed 5 throws. To edit existing throws, please select a score and update it with the button panel. Or use the Undo button to remove the last score.`)
+
+        }
       }
     }
 
-    if (throwCountPlayerOne.current === 5 && throwCountPlayerTwo.current === 5) {
-      const overtime = checkOvertime(p1, p2)
-      if (overtime) {
-        setOvertime(overtime)
-      } else {
-        saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
+
+
+
+
+
+    const finishedSingle = throwCountPlayerOne.current === 5 && throwCountPlayerTwo.current === 5
+    const finishedDual = throwCountPlayerOne.current === 5 && throwCountPlayerTwo.current === 5 && throwCountPartnerOne.current === 5 && throwCountPartnerTwo.current === 5
+    if (!duals) {
+      if (finishedSingle) {
+        const overtime = checkOvertime(p1, p2)
+        if (overtime) {
+          setOvertime(overtime)
+        } else {
+          saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
+        }
       }
     }
+    if (duals) {
+      if (finishedDual) {
+        saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+
+
+      }
+
+    }
+
   }
+
+
   const handleUndo = (e, player) => {
+    const isPartner = player.id === 4 || player.id === 7
+    if (!isPartner) {
+      if (player.team_id === 1 && throwCountPlayerOne.current > 0) {
 
-    if (player.team_id === 1 && throwCountPlayerOne.current > 0) {
+        const tempArray = team_one.players
+        player.scores[throwCountPlayerOne.current - 1] = ""
+        tempArray[matchIndex] = player
+        setSession(prevSession => ({
+          ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
+        }))
+        throwCountPlayerOne.current -= 1
+      } else if (player.team_id === 2 && throwCountPlayerTwo.current > 0) {
 
-      const tempArray = team_one.players
-      player.scores[throwCountPlayerOne.current - 1] = ""
-      tempArray[matchIndex] = player
-      setSession(prevSession => ({
-        ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
-      }))
-      throwCountPlayerOne.current -= 1
-    } else if (player.team_id === 2 && throwCountPlayerTwo.current > 0) {
-
-      const tempArray = team_two.players
-      player.scores[throwCountPlayerTwo.current - 1] = ""
-      tempArray[matchIndex] = player
-      setSession(prevSession => ({
-        ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
-      }))
-      throwCountPlayerTwo.current -= 1
+        const tempArray = team_two.players
+        player.scores[throwCountPlayerTwo.current - 1] = ""
+        tempArray[matchIndex] = player
+        setSession(prevSession => ({
+          ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
+        }))
+        throwCountPlayerTwo.current -= 1
+      }
     }
+    if (isPartner) {
+      if (player.team_id === 1 && throwCountPartnerOne.current > 0) {
 
+        const tempArray = team_one.players
+        player.scores[throwCountPartnerOne.current - 1] = ""
+        tempArray[matchIndex + 1] = player
+        setSession(prevSession => ({
+          ...prevSession, team_one: { ...prevSession.team_one, players: tempArray }
+        }))
+        throwCountPartnerOne.current -= 1
+      } else if (player.team_id === 2 && throwCountPartnerTwo.current > 0) {
+
+        const tempArray = team_two.players
+        player.scores[throwCountPartnerTwo.current - 1] = ""
+        tempArray[matchIndex + 1] = player
+        setSession(prevSession => ({
+          ...prevSession, team_two: { ...prevSession.team_two, players: tempArray }
+        }))
+        throwCountPartnerTwo.current -= 1
+      }
+    }
   }
+
+
   const handleClick = (e, player) => {
     if (e.target.value !== "Undo") {
       handleScore(e, player)
@@ -174,11 +279,18 @@ export default function ScoreBoard({ matchId, setMatchId }) {
         {session ?
           <div className={styles.flex}>
             <ActivePlayer
-              matchId={matchId}
-              player={team_one.players[matchIndex]}
+              player={p1}
               handleClick={handleClick}
               inputSelected={inputSelected}
             />
+            {
+              (matchId.current === 3 || matchId.current === 7) &&
+              (<ActivePlayer
+                player={p1_partner}
+                handleClick={handleClick}
+                inputSelected={inputSelected}
+              />)
+            }
             <div className={styles.metadata}>
 
               <div className={styles.meta_header}>{`M${matchId.current}`}</div>
@@ -187,11 +299,19 @@ export default function ScoreBoard({ matchId, setMatchId }) {
               </div>
             </div>
             <ActivePlayer
-              matchId={matchId}
-              player={team_two.players[matchIndex]}
+              player={p2}
               handleClick={handleClick}
               inputSelected={inputSelected}
             />
+            {
+              (matchId.current === 3 || matchId.current === 7) &&
+              (<ActivePlayer matchId={matchId}
+
+                player={p2_partner}
+                handleClick={handleClick}
+                inputSelected={inputSelected}
+              />)
+            }
           </div >
           : 'loading'
         }
@@ -201,6 +321,8 @@ export default function ScoreBoard({ matchId, setMatchId }) {
           setMatchId={setMatchId}
           throwCountPlayerOne={throwCountPlayerOne}
           throwCountPlayerTwo={throwCountPlayerTwo}
+          throwCountPartnerOne={throwCountPartnerOne}
+          throwCountPartnerTwo={throwCountPartnerTwo}
         />
 
       </div>

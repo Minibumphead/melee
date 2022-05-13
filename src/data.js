@@ -45,19 +45,6 @@ export const match = {
   status_team_two: "",
 }
 
-
-function Team(id, graphic, name, players, points, status, result, matches_won) {
-  this.id = id;
-  this.graphic = graphic;
-  this.name = name;
-  this.players = players;
-  this.points = points;
-  this.status = status;
-  this.result = result;
-  this.matches_won = matches_won
-}
-
-
 export function Player(
   id,
   name,
@@ -80,18 +67,65 @@ export function Player(
   this.overtime_win = overtime_win;
 }
 
+const cleanArray = (array) => {
+  const temp_arr = []
+  array.forEach(score => {
+    if (isNaN(parseInt(score))) {
+      temp_arr.push(0)
+    } else {
+      temp_arr.push(parseInt(score))
+    }
+  })
+  return temp_arr
+}
 
 
+export function Team(id, graphic, name, players, points_array, status, matches_won_array, starter, points_sum, matches_sum,) {
+  this.id = id;
+  this.graphic = graphic;
+  this.name = name;
+  this.players = players;
+  this.points_array = points_array;
+  this.status = status;
+  this.matches_won_array = matches_won_array
+  this.starter = starter
+  this.points_sum = points_sum
+  this.matches_sum = matches_sum
+
+  Team.prototype.sumPoints = function () {
+    const cleaned = cleanArray(this.points_array)
+    var total = 0
+    cleaned.forEach(point => total += point)
+    this.points_sum = total
+    return total
+  }
+  Team.prototype.sumDualsPoints = function () {
+    return this.points_array[0]
+  }
+
+  Team.prototype.sumMatches = function () {
+    const temp_matches = this.matches_won_array
+    var count = 0
+    temp_matches.forEach(match => {
+      if (match) {
+        count += 1
+      }
+    })
+    this.matches_sum = count
+    return count
+  }
+
+}
 
 
 
 export const teams = [
-  new Team(1, wolfPackImage, "Wolfpack", [], 0, "SETUP", 1, 0),
-  new Team(2, axeEvengeresImage, "Axevengers", [], 0, "SETUP", 1, 0),
-  new Team(3, legendsImage, "Legends", [], 0, "SETUP", 1, 0),
-  new Team(4, noNameImage, "Jackalope Axe Club", [], 0, "SETUP", 1, 0),
-  new Team(5, primalClubImage, "Primal", [], 0, "SETUP", 1, 0),
-  new Team(6, soaringBladesImage, "Soaring Blades", [], 0, "SETUP", 1, 0),
-  new Team(7, valkyrianSteelImage, "Valkyrian Steel", [], 0, "SETUP", 1, 0),
-  new Team(8, wmImage, "Widomakers", [], 0, "SETUP", 1, 0),
+  new Team(1, wolfPackImage, "Wolfpack", [], [], "SETUP", [], false, 0, 0),
+  new Team(2, axeEvengeresImage, "Axevengers", [], [], "SETUP", [], false, 0, 0),
+  new Team(3, legendsImage, "Legends", [], [], "SETUP", [], false, 0, 0),
+  new Team(4, noNameImage, "Jackalope Axe Club", [], [], "SETUP", [], false, 0, 0),
+  new Team(5, primalClubImage, "Primal", [], [], "SETUP", [], false, 0, 0),
+  new Team(6, soaringBladesImage, "Soaring Blades", [], [], "SETUP", [], false, 0, 0),
+  new Team(7, valkyrianSteelImage, "Valkyrian Steel", [], [], "SETUP", [], false, 0, 0),
+  new Team(8, wmImage, "Widomakers", [], [], "SETUP", [], false, 0, 0),
 ]

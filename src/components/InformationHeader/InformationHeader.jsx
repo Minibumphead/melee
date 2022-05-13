@@ -6,7 +6,6 @@ import { formatDate } from '../../helpers'
 import backgroundImage from './../../assets/images/logo.png'
 
 export default function InformationHeader({ session, matchId }) {
-  console.log(matchId)
   const [toggleLineup, setToggleLineup] = useState(true)
   const handleToggle = () => {
     setToggleLineup(!toggleLineup)

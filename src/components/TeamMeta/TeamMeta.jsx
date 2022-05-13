@@ -11,7 +11,7 @@ export default function TeamMeta({ team, toggleLineup, dir }) {
       {toggleLineup && (
         <Lineup players={team.players} dir={dir} />
       )}
-      <h2>Team Points: {team.points}</h2>
-      <h2>Matches Won: {team.matches_won}</h2>
+      <h2>Team Points: {team.points_sum}</h2>
+      <h2>Matches Won: {team.matches_sum}</h2>
     </div>)
 }
