@@ -1,18 +1,13 @@
-import React, { useEffect, useContext, useState } from "react";
-import SessionContext from "../../contexts/sessionContext";
+import React from "react";
 import ScorePanel from "../ScorePanel.jsx/ScorePanel";
 import styles from './ActivePlayer.module.css';
 
 export default function ActivePlayer({ player,
-  setCurrentPlayerOne,
-  setCurrentPlayerTwo,
   handleClick,
   inputSelected,
   matchId,
-  currentPlayerOne,
-  currentPlayerTwo
-
 }) {
+
 
   return (
     <div className={styles.root} >
@@ -26,9 +21,8 @@ export default function ActivePlayer({ player,
               key={idx}
               id={idx}
               className={styles.score}
-              value={score[0]}
-              onChange={() => { }}
-              disabled={score === "-"}
+              value={score === "" ? "" : score[0]}
+              onChange={() => { alert("Please use Number Pad") }}
               onClick={(e) => {
                 inputSelected.current = parseInt(e.target.id)
                 e.target.select()
@@ -38,17 +32,14 @@ export default function ActivePlayer({ player,
                   inputSelected.current = -1
                 }, 100)
               }}
-            />)
+            />
+          )
         }
       </div>
       <ScorePanel
         handleClick={handleClick}
         player={player}
         matchId={matchId}
-        currentPlayerOne={currentPlayerOne}
-        currentPlayerTwo={currentPlayerTwo}
-        setCurrentPlayerOne={setCurrentPlayerOne}
-        setCurrentPlayerTwo={setCurrentPlayerTwo}
       />
     </div>)
 

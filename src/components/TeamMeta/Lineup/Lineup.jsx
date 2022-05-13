@@ -3,10 +3,10 @@ import styles from './Lineup.module.css'
 import { getDisciplineFromId } from "../../../helpers";
 
 export default function Lineup({ players, dir }) {
-  console.log(players[0])
 
   return (
-    <div className={dir === "rtl" ? styles.root_reverse : styles.root} >
+    <div className={dir === "rtl" ? styles.root_reverse
+      : styles.root} >
       <div className={styles.header_row}>
         <div className={styles.row_item}>Round</div>
         <div className={styles.row_item}>Name</div>

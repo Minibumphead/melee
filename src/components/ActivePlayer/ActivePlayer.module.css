@@ -1,7 +1,8 @@
 .root {
-  min-width: 320px;
   display: flex;
   flex-direction: column;
+  max-width: 800px;
+  flex: 1
 }
 
 .table_header {
@@ -28,7 +29,6 @@
   text-align: center;
   font-weight: bold;
   font-size: 25px;
-  width: 70px;
   height: 45px;
   margin: 2px 0px;
   border-radius: 5px;
@@ -39,14 +39,8 @@
   border: 1px solid black;
   box-sizing: border-box;
   background: white;
-
-
 }
 
-
-
 .score {
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-  border-top: 1px solid black;
+  border-bottom: 1px solid black;
 }

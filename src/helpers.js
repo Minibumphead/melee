@@ -3,27 +3,13 @@ import { months, Player } from "./data"
 export const saveMatch = (
   session,
   setSession,
-  currentPlayerOne,
-  setCurrentPlayerOne,
-  currentPlayerTwo,
-  setCurrentPlayerTwo,
   matches,
   setMatches,
   matchId,
   calledBy,
   overtimeWin = false) => {
 
-  const cleanScores = (scoreArray) => {
-    const tempArr = []
-    scoreArray.forEach(score => {
-      if (isNaN(parseInt(score))) {
-        tempArr.push(0)
-      } else {
-        tempArr.push(parseInt(score))
-      }
-    })
-    return tempArr
-  }
+
 
   const getAllEights = (scores, val) => {
     var indexes = []
@@ -33,19 +19,15 @@ export const saveMatch = (
       }
     }
     return indexes
-
   }
 
 
   const cleaned_scores_team_one = cleanScores(currentPlayerOne.scores)
   const cleaned_scores_team_two = cleanScores(currentPlayerTwo.scores)
-
-
   const score_team_one = cleaned_scores_team_one.reduce((prev, curr) => parseInt(prev) + parseInt(curr), 0)
   const score_team_two = cleaned_scores_team_two.reduce((prev, curr) => parseInt(prev) + parseInt(curr), 0)
 
 
-  console.log(score_team_one)
 
   const calcTeamPoints = () => {
     var temp_points_team_one = 0
@@ -98,7 +80,6 @@ export const saveMatch = (
       total_score: score_team_two,
       team_points: team_points[1],
       win: (score_team_two > score_team_one) || currentPlayerTwo.overtimeWin,
-
       overtime: score_team_one === score_team_two
     },
     date: new Date()
@@ -143,17 +124,20 @@ export const saveMatch = (
   })
 
   setSession(prevSession => ({
-    ...prevSession, team_one: {
+    ...prevSession,
+    team_one: {
       ...prevSession.team_one,
       players: temp_players_one
 
-    }, team_two: { ...prevSession.team_two, players: temp_players_two }
+
+    }, team_two: {
+      ...prevSession.team_two,
+      players: temp_players_two
+    }
   }))
 
-  const allScoresEntered = currentPlayerOne.scores.includes("-")
-    || currentPlayerTwo.scores.includes("-")
-    ? false : true
-  if (matchId.current < 8 && calledBy === "next" && allScoresEntered) {
+
+  if (matchId.current < 8 && calledBy === "next") {
     matchId.current += 1
   } else if (matchId.current > 0 && calledBy === "prev") {
     matchId.current -= 1
@@ -233,15 +217,180 @@ export const getDisciplineFromId = (id) => {
 export const generatePlayers = (team_id) => {
 
   const tempArr = new Array(10)
-  const scores = ["-", "-", "-", "-", "-"]
   const win = false
   const team_points = 0
   const myId = team_id
   const total_score = 0
+  const overtime = false
+  const overtime_win = false
+
   for (let i = 0; i < tempArr.length; i++) {
+    const scores = ["", "", "", "", ""]
     const id = i + 1
     const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
-    tempArr[i] = new Player(id, name, scores, myId, win, team_points, total_score)
+    tempArr[i] = new Player(
+      id,
+      name,
+      scores,
+      myId,
+      win,
+      team_points,
+      total_score,
+      overtime,
+      overtime_win
+    )
   }
   return tempArr
 }
+
+
+
+const cleanScores = (p1_scores, p2_scores) => {
+  const p1_temp = []
+  const p2_temp = []
+  p1_scores.forEach(score => {
+    if (isNaN(parseInt(score))) {
+      p1_temp.push(0)
+    } else {
+      p1_temp.push(parseInt(score))
+    }
+  })
+  p2_scores.forEach(score => {
+    if (isNaN(parseInt(score))) {
+      p2_temp.push(0)
+    } else {
+      p2_temp.push(parseInt(score))
+    }
+  })
+  return [p1_temp, p2_temp]
+}
+
+const totalScores = (scoresArray) => {
+  const t1 = scoresArray[0].reduce((prev, curr) => prev + curr, 0)
+  const t2 = scoresArray[1].reduce((prev, curr) => prev + curr, 0)
+  return [t1, t2]
+}
+
+export const checkOvertime = (p1, p2) => {
+
+  const cleaned_scores = cleanScores(p1.scores, p2.scores)
+  const total_scores = totalScores(cleaned_scores)
+  // overtimecheck
+  if (total_scores[0] === total_scores[1]) {
+    console.log('ran')
+    p1.overtime = true
+    p2.overtime = true
+    return true
+  }
+}
+
+const countPointsForEights = (scoresArray) => {
+  var p1_count = 0
+  var p2_count = 0
+  scoresArray[0].forEach(score => {
+    if (score === 8) {
+      p1_count += 1
+    }
+  })
+  scoresArray[1].forEach(score => {
+    if (score === 8) {
+      p2_count += 1
+    }
+  })
+  return [p1_count, p2_count]
+}
+const countPerfectMatch = (totalScoreArray) => {
+  const tempArray = [0, 0]
+  if (totalScoreArray[0] === 34) {
+    tempArray[0] = 2
+  }
+  if (totalScoreArray[1] === 34) {
+    tempArray[1] = 2
+  }
+  return tempArray
+}
+
+const countWinPoints = (scoresArray, p1, p2) => {
+  const tempArray = [0, 0]
+  console.log(scoresArray)
+  if (scoresArray[0] > scoresArray[1]) {
+    tempArray[0] = 4
+  } else if (scoresArray[1] > scoresArray[0]) {
+    tempArray[1] = 4
+  } else if (scoresArray[1] === scoresArray[0]) {
+    if (p1.overtime_win === true) {
+      tempArray[0] = 4
+    } else if (p2.overtime_win === true) {
+      tempArray[1] = 4
+    }
+  }
+  return tempArray
+}
+
+
+
+
+const temp_matches = []
+export const saveSession = (p1, p2, setSavedMatches, setSavedSession, session, setSession) => {
+  const cleaned_scores = cleanScores(p1.scores, p2.scores)
+  const total_scores = totalScores(cleaned_scores)
+  const s1 = countPointsForEights(cleaned_scores)
+  const s2 = countPerfectMatch(total_scores)
+  const s3 = countWinPoints(total_scores, p1, p2)
+  p1.team_points = s1[0] + s2[0] + s3[0]
+  p1.total_score = total_scores[0]
+  p2.team_points = s1[1] + s2[1] + s3[1]
+  p2.total_score = total_scores[1]
+  p1.win = s3[0] === 4 ? true : false
+  p2.win = s3[1] === 4 ? true : false
+
+
+
+  const { team_one, team_two } = session
+  var t1_matches_won = team_one.matches_won
+  var t2_matches_won = team_two.matches_won
+  var t1_points = team_one.points
+  var t2_points = team_two.points
+
+  t1_matches_won = p1.win || p1.overtime_win ? t1_matches_won += 1 : t1_matches_won + 0
+  t2_matches_won = p2.win || p2.overtime_win ? t2_matches_won += 1 : t2_matches_won + 0
+  t1_points += p1.team_points
+  t2_points += p2.team_points
+
+  setSession({
+    ...session, team_one: {
+      ...session.team_one,
+      matches_won: t1_matches_won,
+      points: t1_points
+    },
+    team_two: {
+      ...session.team_two,
+      matches_won: t2_matches_won,
+      points: t2_points
+    }
+  })
+
+  setSavedSession({
+    ...session, team_one: {
+      ...session.team_one,
+      matches_won: t1_matches_won,
+      points: t1_points
+    },
+    team_two: {
+      ...session.team_two,
+      matches_won: t2_matches_won,
+      points: t2_points
+    }
+  })
+  temp_matches[p1.id - 1] = {
+    player_one: p1,
+    player_two: p2,
+    date: new Date()
+  }
+  setSavedMatches(temp_matches)
+
+
+
+
+}
+

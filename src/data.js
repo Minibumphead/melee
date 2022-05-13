@@ -65,7 +65,9 @@ export function Player(
   team_id,
   win,
   team_points,
-  total_score
+  total_score,
+  overtime,
+  overtime_win
 ) {
   this.id = id;
   this.name = name;
@@ -74,6 +76,8 @@ export function Player(
   this.win = win;
   this.team_points = team_points;
   this.total_score = total_score
+  this.overtime = overtime;
+  this.overtime_win = overtime_win;
 }
 
 

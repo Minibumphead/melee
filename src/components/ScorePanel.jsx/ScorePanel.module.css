@@ -4,10 +4,7 @@
   cursor: pointer;
 }
 
-.root .row .col :first-child {
-  color: green;
-  font-size: 25px;
-}
+
 
 .row {
   display: flex;

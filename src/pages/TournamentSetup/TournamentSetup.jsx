@@ -11,6 +11,8 @@ export default function TournamentSetup() {
   const [name, setName] = useState('')
   const [teamOne, setTeamOne] = useState()
   const [teamTwo, setTeamTwo] = useState()
+  const [openTeamOne, setOpenTeamOne] = useState(true)
+  const [openTeamTwo, setOpenTeamTwo] = useState(true)
 
   const handleChange = (e) => {
     e.preventDefault()
@@ -21,15 +23,14 @@ export default function TournamentSetup() {
     e.preventDefault()
     if (e.target.name === "teamOne" && e.target.value > 0) {
       const default_players = generatePlayers(1)
-      const default_team = { ...teams[e.target.value - 1], players: default_players }
+      const default_team = { ...teams[e.target.value - 1], players: default_players, starter: true }
       setTeamOne(default_team)
     } else if (e.target.name === "teamTwo" && e.target.value > 0) {
       const default_players = generatePlayers(2)
-      const default_team = { ...teams[e.target.value - 1], players: default_players }
+      const default_team = { id: 2, ...teams[e.target.value - 1], players: default_players, starter: false }
       setTeamTwo(default_team)
     }
   }
-
 
   const isReady = () => {
     if (name.length > 2 && teamOne && teamTwo) {
@@ -40,15 +41,14 @@ export default function TournamentSetup() {
 
   const startTournament = () => {
     localStorage.clear()
-    const first_team = teams[teamOne - 1]
-    const second_team = teams[teamTwo - 1]
 
     if (teamOne && teamTwo) {
       navigate('/play_matches', {
         state: {
+          status: "M1",
           tournament_name: name,
-          team_one: { ...first_team, id: 1, players: generatePlayers(1) },
-          team_two: { ...second_team, id: 2, players: generatePlayers(2) },
+          team_one: { ...teamOne, id: 1 },
+          team_two: { ...teamTwo, id: 2 },
           date: new Date()
         }
       })
@@ -75,7 +75,6 @@ export default function TournamentSetup() {
     }
   }
 
-  console.log(teamOne)
   return (<div className={styles.root}>
     <div className={styles.form_container}>
       <h2>Tournament Information</h2>
@@ -107,8 +106,13 @@ export default function TournamentSetup() {
           </select>
         </label>
         <div>
-
-          {teamOne ? <Team team={teamOne} /> : null}
+          {teamOne && !openTeamOne ? <button onClick={() => setOpenTeamOne(true)}>Show {teamOne.name} Players</button> : null}
+          {(teamOne && openTeamOne) ?
+            <Team
+              team={teamOne}
+              setTeam={setTeamOne}
+              setOpenTeam={setOpenTeamOne}
+            /> : null}
         </div>
 
 
@@ -122,16 +126,23 @@ export default function TournamentSetup() {
             type="select"
             onChange={handleSelect}
             value={teamTwo ? teamTwo.id : 0}
-
           >
-
             <option className={styles.disabled} value={0}>Select Team 2</option>
             {
               teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
             }
           </select>
-
         </label>
+
+        {teamTwo && !openTeamTwo ? <button onClick={() => setOpenTeamTwo(true)}>Show {teamTwo.name} Players</button> : null}
+        <div>
+          {(teamTwo && openTeamTwo) ?
+            <Team
+              team={teamTwo}
+              setTeam={setTeamTwo}
+              setOpenTeam={setOpenTeamTwo}
+            /> : null}
+        </div>
         <button className={isReady() ? styles.start : styles.disabled} onClick={startTournament}>Start Tournament</button>
       </div>
     </div>

@@ -1,19 +1,37 @@
 .root {
-  display: flex;
+  /* display: flex; */
   /* flex-direction: column; */
 }
+
+.flex {
+  display: flex;
+  padding-top: 15px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 
 .player_label {
   font-size: 25px;
   display: flex;
   margin-right: 25px;
   align-items: center;
+  padding: 5px 0px
 }
 
 
 .player_label input {
   margin-left: 25px;
-  padding: 15px;
+  padding: 10px;
   border: 2px solid black;
   font-size: 25px;
+}
+
+.hide_players {
+  padding: 10px;
+  background: lightcoral;
 }

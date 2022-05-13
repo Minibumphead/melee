@@ -1,6 +1,12 @@
 .root {
   display: flex;
   padding: 25px 0px;
+
+}
+
+.logo {
+  width: 200px;
+  height: 200px;
 }
 
 .outer_section {
@@ -12,20 +18,15 @@
   flex: 1
 }
 
-button {
-  padding: 15px;
-  border-radius: 4px;
-  width: 50%;
-  margin-left: 25%;
-  margin-top: 25px;
-  font-size: 25px;
+.toggle_button {
+  padding: 8px;
   font-weight: bold;
-  border: none
+  border-radius: 8px;
+  width: 80%;
+  border: none;
 }
 
-
-button:hover {
-  background: lightgreen;
+.toggle_button:hover {
+  opacity: 0.6;
   cursor: pointer;
-  transition: 800ms
 }

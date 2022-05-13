@@ -6,9 +6,9 @@ export default function ScoringButton({ name, value, handleClick, player, status
   const multiplePressButtons = ['0', 'Fault', 'Drop', 'Undo']
 
   const setDisabled = () => {
-    if (status === "READY" || status === "SETUP") {
-      return true
-    }
+    // if (status === "READY" || status === "SETUP") {
+    //   return true
+    // }
 
     if (multiplePressButtons.indexOf(name) >= 0) {
       return false

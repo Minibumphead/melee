@@ -5,33 +5,10 @@ import { saveMatch } from "../../helpers";
 import SessionContext from "../../contexts/sessionContext";
 
 
-export default function ScorePanel({ handleClick, player, matchId, currentPlayerOne, currentPlayerTwo, setCurrentPlayerOne, setCurrentPlayerTwo }) {
+export default function ScorePanel({ handleClick, player, matchId }) {
   const [session, setSession] = useContext(SessionContext)
   const [callKill, setCallKill] = useState(false)
-  const [overtime, setOvertime] = useState(false)
 
-
-
-  useEffect(() => {
-    if (currentPlayerOne.total_score === currentPlayerTwo.total_score) {
-      setOvertime(true)
-    } else {
-      setOvertime(false)
-      setCurrentPlayerOne({ ...currentPlayerOne, overtimeWin: false })
-      setCurrentPlayerTwo({ ...currentPlayerTwo, overtimeWin: false })
-    }
-  }, [currentPlayerOne.win, currentPlayerTwo.win, currentPlayerTwo.scores, currentPlayerOne.scores, currentPlayerOne.status])
-
-
-  const handleOvertime = () => {
-    if (player.team_id === 1) {
-      setCurrentPlayerOne(prevPlayer => ({ ...prevPlayer, overtimeWin: !prevPlayer.overtimeWin }))
-    } else if (player.team_id === 2) {
-
-      setCurrentPlayerTwo(prevPlayer => ({ ...prevPlayer, overtimeWin: !prevPlayer.overtimeWin }))
-    }
-
-  }
 
 
   return (
@@ -85,8 +62,6 @@ export default function ScorePanel({ handleClick, player, matchId, currentPlayer
           }</div>
       </div>
 
-      {overtime ? <button className={player.overtimeWin ? styles.win : styles.lost} onClick={() => handleOvertime()}>Overtime Win</button> : null
-      }
     </div >)
 
 }
