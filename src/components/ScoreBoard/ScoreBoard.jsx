@@ -4,7 +4,7 @@ import styles from './ScoreBoard.module.css'
 import ProgressButton from '../ProgressButton/ProgressButton'
 import SessionContext from '../../contexts/sessionContext'
 import ActivePlayer from '../ActivePlayer/ActivePlayer'
-import { useLocalStorage, saveSession, saveSessionAfterDual, checkOvertime } from '../../helpers'
+import { useLocalStorage, saveSession, saveSessionAfterDual, checkOvertime, getDisciplineFromId } from '../../helpers'
 
 
 export default function ScoreBoard({ matchId, setMatchId }) {
@@ -27,6 +27,8 @@ export default function ScoreBoard({ matchId, setMatchId }) {
   const p1_partner = team_one.players[matchIndex + 1]
   const p2 = team_two.players[matchIndex]
   const p2_partner = team_two.players[matchIndex + 1]
+  console.log(p1)
+  console.log(p1_partner)
 
 
 
@@ -41,9 +43,9 @@ export default function ScoreBoard({ matchId, setMatchId }) {
 
 
   const handleScore = (e, player) => {
-    const isPartner = (player.id === 4 || player.id === 7)
+    const isPartner = (player.id === 4 || player.id === 9)
     const noInputSelected = inputSelected.current < 0
-
+    console.log(player)
     if (player.team_id === 1) {
       if (isPartner) {
         if (throwCountPartnerOne.current < 5 && noInputSelected) {
@@ -172,7 +174,7 @@ export default function ScoreBoard({ matchId, setMatchId }) {
 
 
   const handleUndo = (e, player) => {
-    const isPartner = player.id === 4 || player.id === 7
+    const isPartner = player.id === 4 || player.id === 9
     if (!isPartner) {
       if (player.team_id === 1 && throwCountPlayerOne.current > 0) {
 
@@ -255,7 +257,7 @@ export default function ScoreBoard({ matchId, setMatchId }) {
 
   return (
     <div className={styles.root}>
-      <div>
+      <div >
         {overtime && (<div id="overlay" className={styles.overlay} onClick={(e) => onClickOutside(e)}>
           <div className={styles.overlay_content}>
 
@@ -284,7 +286,7 @@ export default function ScoreBoard({ matchId, setMatchId }) {
               inputSelected={inputSelected}
             />
             {
-              (matchId.current === 3 || matchId.current === 7) &&
+              (matchId.current === 3 || matchId.current === 8) &&
               (<ActivePlayer
                 player={p1_partner}
                 handleClick={handleClick}
@@ -293,9 +295,9 @@ export default function ScoreBoard({ matchId, setMatchId }) {
             }
             <div className={styles.metadata}>
 
-              <div className={styles.meta_header}>{`M${matchId.current}`}</div>
+              <div className={styles.meta_header}>{getDisciplineFromId(p1.id)}</div>
               <div className={styles.meta_rounds}>
-                {[1, 2, 3, 4, 5].map(round => <div key={round} className={styles.round}>{round}</div>)}
+                {[1, 2, 3, 4, 5, "T"].map(round => <div key={round} className={styles.round}>{round}</div>)}
               </div>
             </div>
             <ActivePlayer
@@ -304,9 +306,8 @@ export default function ScoreBoard({ matchId, setMatchId }) {
               inputSelected={inputSelected}
             />
             {
-              (matchId.current === 3 || matchId.current === 7) &&
+              (matchId.current === 3 || matchId.current === 8) &&
               (<ActivePlayer matchId={matchId}
-
                 player={p2_partner}
                 handleClick={handleClick}
                 inputSelected={inputSelected}
@@ -326,7 +327,7 @@ export default function ScoreBoard({ matchId, setMatchId }) {
         />
 
       </div>
-    // </div>
+    </div>
 
   )
 }

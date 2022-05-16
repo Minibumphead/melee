@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TeamLogo from '../TeamLogo/TeamLogo'
 import TeamMeta from '../TeamMeta/TeamMeta'
 import styles from './InformationHeader.module.css'
-import { formatDate } from '../../helpers'
+import { formatDate, getDisciplineFromId } from '../../helpers'
 import backgroundImage from './../../assets/images/logo.png'
 
 export default function InformationHeader({ session, matchId }) {
@@ -10,6 +10,16 @@ export default function InformationHeader({ session, matchId }) {
   const handleToggle = () => {
     setToggleLineup(!toggleLineup)
   }
+
+  const [count, setCount] = useState(0)
+
+  // setInterval(() => setCount(count + 1), 1000)
+  useEffect(() => {
+    let interval = null
+    interval = setInterval(() => { setCount(prevCount => prevCount + 10) }, 10)
+
+
+  }, [])
 
 
   return (
@@ -31,8 +41,14 @@ export default function InformationHeader({ session, matchId }) {
         >
           {toggleLineup ? "Hide Lineup" : "Show Lineuip"}
         </button>
-        <h1>Status</h1>
-        <h1>{`M${matchId.current}`}</h1>
+        <h1 className={styles.status_header}>Match in Prgoress</h1>
+        <h1>{getDisciplineFromId(matchId.current)}</h1>
+        <h1>Time elapsed:</h1>
+        <h1>
+          <span>{("0" + Math.floor(count / 60000) % 60).slice(-2)}:</span>
+          <span>{("0" + Math.floor(count / 1000) % 60).slice(-2)}:</span>
+          <span>{("0" + (count / 10) % 100).slice(-2)}</span>
+        </h1>
       </div>
       <div className={styles.outer_section}>
 

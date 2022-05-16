@@ -95,21 +95,30 @@ export function Team(id, graphic, name, players, points_array, status, matches_w
   Team.prototype.sumPoints = function () {
     const cleaned = cleanArray(this.points_array)
     var total = 0
-    cleaned.forEach(point => total += point)
+    cleaned.forEach((point, index) => {
+      if (index === 3 || index === 7) {
+        console.log('not counted')
+      } else {
+
+        total += point
+      }
+    })
     this.points_sum = total
     return total
-  }
-  Team.prototype.sumDualsPoints = function () {
-    return this.points_array[0]
   }
 
   Team.prototype.sumMatches = function () {
     const temp_matches = this.matches_won_array
     var count = 0
-    temp_matches.forEach(match => {
-      if (match) {
-        count += 1
+    temp_matches.forEach((match, index) => {
+      if (index === 3 || index === 7) {
+        console.log('no count for match')
+      } else {
+        if (match) {
+          count += 1
+        }
       }
+
     })
     this.matches_sum = count
     return count

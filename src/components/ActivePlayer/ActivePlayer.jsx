@@ -8,9 +8,20 @@ export default function ActivePlayer({ player,
 }) {
 
 
+  const isDoubleParticipant = [3, 4, 8, 9].includes(player.id)
+
+  const scores = player.scores.map(
+    (score) => {
+      if (isNaN(parseInt(score))) {
+        return 0
+      } else return parseInt(score)
+
+    }
+  )
+  const sumPoints = scores.reduce((prev, curr) => prev + curr, 0)
 
   return (
-    <div className={styles.root} >
+    <div className={isDoubleParticipant ? styles.root_border : styles.root} >
       <div className={styles.table_header}>
         {player.name}
       </div>
@@ -36,6 +47,7 @@ export default function ActivePlayer({ player,
           )
         }
       </div>
+      <div className={styles.total}>{sumPoints}</div>
       <ScorePanel
         handleClick={handleClick}
         player={player}

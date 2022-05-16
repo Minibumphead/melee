@@ -8,14 +8,13 @@ export default function Team({ team, setTeam, setOpenTeam }) {
 
 
   const handleChange = (e) => {
+    console.log(e.target)
     e.preventDefault()
-    var tempArray = [...team.players]
+    const tempArray = [...team.players]
     tempArray[e.target.id - 1].name = e.target.value
-    if (team.starter) {
-      setTeam(prevTeam => ({
-        ...prevTeam, players: tempArray
-      }))
-    }
+    setTeam(prevTeam => ({
+      ...prevTeam, players: tempArray
+    }))
 
   }
 

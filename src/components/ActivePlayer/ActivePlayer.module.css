@@ -1,8 +1,16 @@
-.root {
+.root,
+.root_border {
   display: flex;
   flex-direction: column;
   max-width: 800px;
   flex: 1
+}
+
+.root_border {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  box-sizing: border-box;
+  margin: 0
 }
 
 .table_header {
@@ -24,16 +32,29 @@
 }
 
 .table_body input {
+  background-color: yellow;
   border: none;
-  outline: none;
   text-align: center;
-  font-weight: bold;
-  font-size: 25px;
+  font-size: 30px;
   height: 45px;
-  margin: 2px 0px;
   border-radius: 5px;
-  background: yellow;
+  margin: 0px;
 }
+
+.total {
+
+  background: yellow;
+  border-top: 4px solid black;
+  border-radius: 0px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+  height: 60px;
+  font-weight: bold;
+}
+
 
 .table_body input:focus {
   border: 1px solid black;

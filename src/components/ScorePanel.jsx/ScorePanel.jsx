@@ -8,7 +8,7 @@ export default function ScorePanel({ handleClick, player }) {
   const [session, setSession] = useContext(SessionContext)
   const [callKill, setCallKill] = useState(false)
 
-  const isDualMatch = player.id === 3 || player.id === 4
+  const isDualMatch = player.id === 3 || player.id === 4 || player.id === 8 || player.id === 9
 
 
   return (

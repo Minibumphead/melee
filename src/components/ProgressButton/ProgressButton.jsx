@@ -24,7 +24,7 @@ export default function ProgressButton({
   }
 
   const handleNext = () => {
-    if (matchId.current === 3 || matchId.current === 7) {
+    if (matchId.current === 3 || matchId.current === 8) {
       setMatchId(prevId => {
         return { current: prevId.current + 2 }
       })
@@ -68,7 +68,7 @@ export default function ProgressButton({
   }
   const handlePrev = () => {
     if (matchId.current > 1) {
-      if (matchId.current === 5 || matchId.current === 9) {
+      if (matchId.current === 5 || matchId.current === 10) {
         setMatchId(prevId => {
           return { current: prevId.current - 2 }
         })
@@ -90,11 +90,11 @@ export default function ProgressButton({
       <button className={styles.next} onClick={() => console.log(matchId.current)}>print matchID</button>
       <button className={styles.next} onClick={() => handleNext()}>Next</button>
       <button className={styles.next} onClick={() => handlePrev()}>Back</button>
-      <button className={styles.next} onClick={() => console.log(session)}>Log Session</button>
+      {/* <button className={styles.next} onClick={() => console.log(session)}>Log Session</button> */}
 
 
-      <button className={styles.root} onClick={() => {
+      {/* <button className={styles.root} onClick={() => {
         console.log(localStorage.clear())
-      }}>clear local storage</button>
+      }}>clear local storage</button> */}
     </>)
 }
