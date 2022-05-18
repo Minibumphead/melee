@@ -16,8 +16,7 @@ export default function InformationHeader({ session, matchId }) {
   // setInterval(() => setCount(count + 1), 1000)
   useEffect(() => {
     let interval = null
-    interval = setInterval(() => { setCount(prevCount => prevCount + 10) }, 10)
-
+    interval = setInterval(() => { setCount(prevCount => prevCount + 1000) }, 1000)
 
   }, [])
 
@@ -32,7 +31,7 @@ export default function InformationHeader({ session, matchId }) {
       </div>
       <div className={styles.center}>
         <h1>{session.tournament_name}</h1>
-        <h2>{formatDate(session.date)}</h2>
+        {/* <h2>{formatDate(session.date)}</h2> */}
         <img src={backgroundImage} alt="melee_logo" className={styles.logo} />
         <button
           className={styles.toggle_button}
@@ -43,11 +42,11 @@ export default function InformationHeader({ session, matchId }) {
         </button>
         <h1 className={styles.status_header}>Match in Prgoress</h1>
         <h1>{getDisciplineFromId(matchId.current)}</h1>
-        <h1>Time elapsed:</h1>
+        {/* <h1>Time elapsed:</h1> */}
         <h1>
+          <span>{("0" + Math.floor(count / 3600000) % 60).slice(-2)}:</span>
           <span>{("0" + Math.floor(count / 60000) % 60).slice(-2)}:</span>
-          <span>{("0" + Math.floor(count / 1000) % 60).slice(-2)}:</span>
-          <span>{("0" + (count / 10) % 100).slice(-2)}</span>
+          <span>{("0" + Math.floor(count / 1000) % 60).slice(-2)}</span>
         </h1>
       </div>
       <div className={styles.outer_section}>

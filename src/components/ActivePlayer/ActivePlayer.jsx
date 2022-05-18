@@ -27,12 +27,12 @@ export default function ActivePlayer({ player,
       </div>
       <div className={styles.table_body}>
         {
-          player.scores.map((score, idx) =>
+          player.scores.slice(0, 5).map((score, idx) =>
             <input
               key={idx}
               id={idx}
               className={styles.score}
-              value={score === "" ? "" : score[0]}
+              value={score === "" ? "" : score.slice(0, 3)}
               onChange={() => { alert("Please use Number Pad") }}
               onClick={(e) => {
                 inputSelected.current = parseInt(e.target.id)

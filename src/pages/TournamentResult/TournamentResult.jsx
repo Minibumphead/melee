@@ -9,57 +9,57 @@ export default function TournamentResult() {
   const [matches, setMatches] = useState([])
   const [exportDataTeamOne, setExportDataTeamOne] = useState([])
   const [exportDataTeamTwo, setExportDataTeamTwo] = useState([])
-  const generateData = (matches, team_id) => {
-    const export_data = []
-    if (team_id === 1) {
-      for (let i = 0; i < matches.length; i++) {
-        export_data.push({
+  // const generateData = (matches, team_id) => {
+  //   const export_data = []
+  //   if (team_id === 1) {
+  //     for (let i = 0; i < matches.length; i++) {
+  //       export_data.push({
 
-          id: matches[i].player_one.name,
-          t1: matches[i].player_one.scores[0],
-          t2: matches[i].player_one.scores[1],
-          t3: matches[i].player_one.scores[2],
-          t4: matches[i].player_one.scores[3],
-          t5: matches[i].player_one.scores[4],
-          sum: matches[i].player_one.total_score,
-          points: matches[i].player_one.team_points,
-          time: matches[i].date
-        })
+  //         id: matches[i].player_one.name,
+  //         t1: matches[i].player_one.scores[0],
+  //         t2: matches[i].player_one.scores[1],
+  //         t3: matches[i].player_one.scores[2],
+  //         t4: matches[i].player_one.scores[3],
+  //         t5: matches[i].player_one.scores[4],
+  //         sum: matches[i].player_one.total_score,
+  //         points: matches[i].player_one.team_points,
+  //         time: matches[i].date
+  //       })
 
-      }
+  //     }
 
-      return export_data
-    } else if (team_id === 2) {
-      for (let i = 0; i < matches.length; i++) {
-        export_data.push({
+  //     return export_data
+  //   } else if (team_id === 2) {
+  //     for (let i = 0; i < matches.length; i++) {
+  //       export_data.push({
 
-          id: matches[i].player_two.name,
-          t1: matches[i].player_two.scores[0],
-          t2: matches[i].player_two.scores[1],
-          t3: matches[i].player_two.scores[2],
-          t4: matches[i].player_two.scores[3],
-          t5: matches[i].player_two.scores[4],
-          sum: matches[i].player_two.total_score,
-          points: matches[i].player_two.team_points,
+  //         id: matches[i].player_two.name,
+  //         t1: matches[i].player_two.scores[0],
+  //         t2: matches[i].player_two.scores[1],
+  //         t3: matches[i].player_two.scores[2],
+  //         t4: matches[i].player_two.scores[3],
+  //         t5: matches[i].player_two.scores[4],
+  //         sum: matches[i].player_two.total_score,
+  //         points: matches[i].player_two.team_points,
 
-          time: matches[i].date
-        })
+  //         time: matches[i].date
+  //       })
 
-      }
-      return export_data
-    }
+  //     }
+  //     return export_data
+  //   }
 
-  }
+  // }
   useEffect(() => {
     const my_matches = localStorage.getItem("matches")
     const my_matches_json = JSON.parse(my_matches)
     setMatches(my_matches_json)
-    const export_data_team_one = generateData(my_matches_json, 1)
+    // const export_data_team_one = generateData(my_matches_json, 1)
 
-    setExportDataTeamOne(export_data_team_one)
+    // setExportDataTeamOne(export_data_team_one)
 
-    const export_data_team_two = generateData(my_matches_json, 2)
-    setExportDataTeamTwo(export_data_team_two)
+    // const export_data_team_two = generateData(my_matches_json, 2)
+    // setExportDataTeamTwo(export_data_team_two)
   }, [])
 
 
@@ -160,9 +160,9 @@ export default function TournamentResult() {
       })
     }
     <div className={styles.csv_export_container}>
-      <CSVExport team_id={1} />
+      {/* <CSVExport team_id={1} /> */}
 
-      <CSVExport team_id={2} />
+      {/* <CSVExport team_id={2} /> */}
 
 
       <a href="/">Setup New Tournament</a>

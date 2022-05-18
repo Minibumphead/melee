@@ -25,9 +25,9 @@ export default function ScorePanel({ handleClick, player }) {
           <ScoringButton name="5" value={5} handleClick={handleClick} player={player} status={session.status} />
 
         </div><div className={styles.row}>
-          <ScoringButton name="6 Top" value={6} handleClick={handleClick} player={player} status={session.status} />
-          <ScoringButton name="6 Middle" value={6} handleClick={handleClick} player={player} status={session.status} />
-          <ScoringButton name="6 Bottom" value={6} handleClick={handleClick} player={player} status={session.status} />
+          <ScoringButton name="6 T" value={6} handleClick={handleClick} player={player} status={session.status} />
+          <ScoringButton name="6 M" value={6} handleClick={handleClick} player={player} status={session.status} />
+          <ScoringButton name="6 B" value={6} handleClick={handleClick} player={player} status={session.status} />
 
         </div>
         <div className={styles.row}>
@@ -38,8 +38,8 @@ export default function ScorePanel({ handleClick, player }) {
       </div> :
         <div>
           <div className={styles.row}>
-            <ScoringButton name="8 UL" value={8} handleClick={handleClick} player={player} status={session.status} />
-            <ScoringButton name="8 UR" value={8} handleClick={handleClick} player={player} status={session.status} />
+            <ScoringButton name="8 TL" value={8} handleClick={handleClick} player={player} status={session.status} />
+            <ScoringButton name="8 TR" value={8} handleClick={handleClick} player={player} status={session.status} />
             <ScoringButton name="8 BL" value={8} handleClick={handleClick} player={player} status={session.status} />
             <ScoringButton name="8 BR" value={8} handleClick={handleClick} player={player} status={session.status} />
 
@@ -47,8 +47,8 @@ export default function ScorePanel({ handleClick, player }) {
           </div>
           {isDualMatch && (
             <div className={styles.row}>
-              <ScoringButton name="9 UL" value={9} handleClick={handleClick} player={player} status={session.status} />
-              <ScoringButton name="9 UR" value={9} handleClick={handleClick} player={player} status={session.status} />
+              <ScoringButton name="9 TL" value={9} handleClick={handleClick} player={player} status={session.status} />
+              <ScoringButton name="9 TR" value={9} handleClick={handleClick} player={player} status={session.status} />
               <ScoringButton name="9 BL" value={9} handleClick={handleClick} player={player} status={session.status} />
               <ScoringButton name="9 BR" value={9} handleClick={handleClick} player={player} status={session.status} />
             </div>
@@ -67,7 +67,7 @@ export default function ScorePanel({ handleClick, player }) {
           onClick={() => setCallKill(!callKill)}
 
         > {
-            callKill ? "Cancel" : "Call Kill Shot"
+            callKill ? "Cancel" : "Call Killshot"
           }</div>
       </div>
 

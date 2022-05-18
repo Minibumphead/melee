@@ -65,24 +65,28 @@ export default function TournamentSetup() {
 
   const getDate = () => {
     const time = new Date()
-    const month = months[time.getMonth()]
+    const month = (time.getMonth() + 1).toString()
+    const month_with_zero = month.length === 1 ? `0${month}` : month
+
     const day = time.getDate()
+    const year = time.getFullYear()
+    return `${month_with_zero}/${day}/${year}`
     const appenditures = ["st", "nd", "rd", "th"]
-    if (day === 1) {
-      return `The ${day}${appenditures[0]} of ${month}`
-    } else if (day === 2) {
-      return `The ${day}${appenditures[1]} of ${month}`
-    } else if (day === 3) {
-      return `The ${day}${appenditures[2]} of ${month}`
-    }
-    else {
-      return `The ${day}${appenditures[3]} of ${month}`
-    }
+    // if (day === 1) {
+    //   return `The ${day}${appenditures[0]} of ${month}`
+    // } else if (day === 2) {
+    //   return `The ${day}${appenditures[1]} of ${month}`
+    // } else if (day === 3) {
+    //   return `The ${day}${appenditures[2]} of ${month}`
+    // }
+    // else {
+    //   return `The ${day}${appenditures[3]} of ${month}`
+    // }
   }
 
   return (<div className={styles.root}>
     <div className={styles.form_container}>
-      <h2>Tournament Information</h2>
+      <h2>Tournament Setup</h2>
       <h3>Date:  {getDate()}</h3>
       <label htmlFor="name">Name
         <input

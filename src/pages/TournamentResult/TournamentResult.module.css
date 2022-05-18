@@ -1,87 +1,73 @@
 .root {
   display: flex;
   flex-wrap: wrap;
-}
-
-.header {
-  border-bottom: 2px solid black;
-  text-align: center;
-  font-size: 25px;
-  font-weight: bold;
-  border-right: 2px solid black;
-  padding: 15px;
-}
-
-.match_container {
-  border: 2px solid black;
-  border-right: none;
-  border-bottom: none;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
   margin: 50px;
-  background: rgb(150, 255, 118);
-
+  align-items: center;
 }
 
-.row {
-  border-right: 2px solid black;
+.flex {
   display: flex;
+  height: 30px;
+  border: 1px solid black;
+  padding: 7px 15px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+}
+
+
+
+.row_item,
+.bold {
   flex: 1;
-  border-top: 2px solid black;
-}
-
-.score_section {
-  display: flex;
-}
-
-
-
-.col {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  border-right: 2px solid black;
-}
-
-
-
-
-.col_item {
-  border-bottom: 2px solid black;
-  padding: 5px 5px;
-}
-
-
-.row_item {
-  flex: 1;
-  padding: 5px;
-}
-
-.row :first-child {
-  border-right: 2px solid black;
-}
-
-
-.csv_export_container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.col_player {
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.col_player_dark_theme {
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  background-color: lightgrey;
+}
+
+.col {
+  min-width: 30%;
+  display: flex;
+  flex-direction: column;
+  margin: 25px;
+  background-color: rgb(118, 196, 118);
+
+
+}
+
 .bold {
-  font-weight: 700;
+  font-weight: bold;
   font-size: 20px;
 }
 
-.col_item img {
-  width: 15px;
-
-  height: 15px;
-  padding: 3px 3px;
-
+.header {
+  display: flex;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  padding: 15px;
+  border: 2px solid black;
 }
 
-.block {
-  display: block;
+
+.team_logo {
+  width: 200px;
+  height: 200px;
+  margin-right: 25px;
 }

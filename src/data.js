@@ -54,7 +54,9 @@ export function Player(
   team_points,
   total_score,
   overtime,
-  overtime_win
+  overtime_scores,
+  finished_match,
+
 ) {
   this.id = id;
   this.name = name;
@@ -64,7 +66,8 @@ export function Player(
   this.team_points = team_points;
   this.total_score = total_score
   this.overtime = overtime;
-  this.overtime_win = overtime_win;
+  this.overtime_scores = overtime_scores;
+  this.finished_match = finished_match
 }
 
 const cleanArray = (array) => {
@@ -97,7 +100,6 @@ export function Team(id, graphic, name, players, points_array, status, matches_w
     var total = 0
     cleaned.forEach((point, index) => {
       if (index === 3 || index === 7) {
-        console.log('not counted')
       } else {
 
         total += point
@@ -112,7 +114,6 @@ export function Team(id, graphic, name, players, points_array, status, matches_w
     var count = 0
     temp_matches.forEach((match, index) => {
       if (index === 3 || index === 7) {
-        console.log('no count for match')
       } else {
         if (match) {
           count += 1
@@ -138,3 +139,4 @@ export const teams = [
   new Team(7, valkyrianSteelImage, "Valkyrian Steel", [], [], "SETUP", [], false, 0, 0),
   new Team(8, wmImage, "Widomakers", [], [], "SETUP", [], false, 0, 0),
 ]
+

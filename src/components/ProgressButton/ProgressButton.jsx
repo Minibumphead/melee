@@ -6,10 +6,6 @@ import SessionContext from "../../contexts/sessionContext";
 export default function ProgressButton({
   matchId,
   setMatchId,
-  throwCountPlayerOne,
-  throwCountPlayerTwo,
-  throwCountPartnerOne,
-  throwCountPartnerTwo,
 }) {
 
   const navigate = useNavigate()
@@ -20,6 +16,7 @@ export default function ProgressButton({
   }
 
   const endSession = () => {
+    setSession(prevSession => ({ ...prevSession, status: "FINISHED" }))
     navigate('/view_result')
   }
 
@@ -29,15 +26,12 @@ export default function ProgressButton({
         return { current: prevId.current + 2 }
       })
 
-    } else {
+    } else if (matchId.current < 10) {
       setMatchId(prevId => {
         return { current: prevId.current + 1 }
       })
     }
-    throwCountPlayerOne.current = 0
-    throwCountPlayerTwo.current = 0
-    throwCountPartnerOne.current = 0
-    throwCountPartnerTwo.current = 0
+
     // if (session.status === "READY_FOR_NEXT") {
     //   if (matchId.current < 8) {
     //     if (matchId.current === 3 || matchId.current === 7) {
@@ -79,18 +73,19 @@ export default function ProgressButton({
       }
 
     }
-    throwCountPlayerOne.current = 5
-    throwCountPlayerTwo.current = 5
   }
 
 
 
   return (
     <>
-      <button className={styles.next} onClick={() => console.log(matchId.current)}>print matchID</button>
-      <button className={styles.next} onClick={() => handleNext()}>Next</button>
-      <button className={styles.next} onClick={() => handlePrev()}>Back</button>
-      {/* <button className={styles.next} onClick={() => console.log(session)}>Log Session</button> */}
+      {/* <button className={styles.next} onClick={() => console.log(matchId.current)}>print matchID</button> */}
+      <div className={styles.flex}>
+        <button className={styles.next} onClick={() => handlePrev()}>Back</button>
+        <button className={styles.next} onClick={() => handleNext()}>Next</button>
+        <button className={styles.next} onClick={() => endSession()}>View Result</button>
+      </div>
+      <button className={styles.next} onClick={() => console.log(session)}>Log Session</button>
 
 
       {/* <button className={styles.root} onClick={() => {

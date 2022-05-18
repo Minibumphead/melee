@@ -4,7 +4,8 @@ import styles from './ScoreBoard.module.css'
 import ProgressButton from '../ProgressButton/ProgressButton'
 import SessionContext from '../../contexts/sessionContext'
 import ActivePlayer from '../ActivePlayer/ActivePlayer'
-import { useLocalStorage, saveSession, saveSessionAfterDual, checkOvertime, getDisciplineFromId } from '../../helpers'
+import { Overtime, DualsOvertime } from '../Overtime/Overtime'
+import { useLocalStorage, saveSession, saveSessionAfterDual, checkOvertime, checkDualsOvertime, getDisciplineFromId } from '../../helpers'
 
 
 export default function ScoreBoard({ matchId, setMatchId }) {
@@ -15,7 +16,7 @@ export default function ScoreBoard({ matchId, setMatchId }) {
   const throwCountPartnerTwo = useRef(0)
 
   const [overtime, setOvertime] = useState(false)
-  const [overtimeWinner, setOvertimeWinner] = useState(0)
+  const [overtimePoints] = useState([0, 0])
   const [savedMatches, setSavedMatches] = useLocalStorage("matches", [], useState)
   const [savedSession, setSavedSession] = useLocalStorage("session", [], useState)
   const [duals, setDuals] = useState(false)
@@ -27,25 +28,57 @@ export default function ScoreBoard({ matchId, setMatchId }) {
   const p1_partner = team_one.players[matchIndex + 1]
   const p2 = team_two.players[matchIndex]
   const p2_partner = team_two.players[matchIndex + 1]
-  console.log(p1)
-  console.log(p1_partner)
+
 
 
 
   useEffect(() => {
-    if (matchId.current === 3) {
+    if (matchId.current === 3 || matchId.current === 8) {
       setDuals(true)
     } else {
       setDuals(false)
     }
+    // handle fetching from LS //
+    if (JSON.parse(localStorage.getItem("session")) !== null) {
+      setSession(savedSession)
+      if (session.team_one.players[matchId.current - 1].finished_match ||
+        savedSession.team_one.players[matchId.current - 1].finished_match) {
+        throwCountPlayerOne.current = 5
+        throwCountPlayerTwo.current = 5
+        throwCountPartnerOne.current = 5
+        throwCountPartnerTwo.current = 5
+      } else {
+        throwCountPlayerOne.current = 0
+        throwCountPlayerTwo.current = 0
+        throwCountPartnerOne.current = 0
+        throwCountPartnerTwo.current = 0
+      }
+
+    } else {
+
+      if (session.team_one.players[matchId.current - 1].finished_match) {
+        throwCountPlayerOne.current = 5
+        throwCountPlayerTwo.current = 5
+        throwCountPartnerOne.current = 5
+        throwCountPartnerTwo.current = 5
+      }
+    }
+
 
   }, [matchId.current])
+
+
+
+
+
+
+
+
 
 
   const handleScore = (e, player) => {
     const isPartner = (player.id === 4 || player.id === 9)
     const noInputSelected = inputSelected.current < 0
-    console.log(player)
     if (player.team_id === 1) {
       if (isPartner) {
         if (throwCountPartnerOne.current < 5 && noInputSelected) {
@@ -153,8 +186,10 @@ export default function ScoreBoard({ matchId, setMatchId }) {
     const finishedDual = throwCountPlayerOne.current === 5 && throwCountPlayerTwo.current === 5 && throwCountPartnerOne.current === 5 && throwCountPartnerTwo.current === 5
     if (!duals) {
       if (finishedSingle) {
-        const overtime = checkOvertime(p1, p2)
+        const overtime = checkOvertime(p1, p2) // checks if scores are equal
         if (overtime) {
+
+          saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
           setOvertime(overtime)
         } else {
           saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
@@ -163,13 +198,16 @@ export default function ScoreBoard({ matchId, setMatchId }) {
     }
     if (duals) {
       if (finishedDual) {
-        saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
 
-
+        const overtime = checkDualsOvertime(p1, p2, p1_partner, p2_partner) // checks if scores are equal
+        if (overtime) {
+          saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+          setOvertime(overtime)
+        } else {
+          // saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+        }
       }
-
     }
-
   }
 
 
@@ -230,24 +268,8 @@ export default function ScoreBoard({ matchId, setMatchId }) {
   }
 
 
-  const handleOvertimeWin = (clickedPlayer) => {
-    const opponent = clickedPlayer.team_id === 1 ?
-      team_two.players[matchIndex] : team_one.players[matchIndex]
-    if (!clickedPlayer.overtime_win && !opponent.overtime_win) {
-      clickedPlayer.overtime_win = true
-    } else {
-      clickedPlayer.overtime_win = !clickedPlayer.overtime_win
-      opponent.overtime_win = !opponent.overtime_win
-    }
-    const winner_team_id = clickedPlayer.overtime_win ?
-      clickedPlayer.team_id : opponent.team_id
-    setOvertimeWinner(winner_team_id)
-  }
 
-  const confirmOvertimeWin = () => {
-    saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
-    setOvertime(false)
-  }
+
 
   const onClickOutside = (e) => {
     if (e.target.id === "overlay") {
@@ -255,29 +277,42 @@ export default function ScoreBoard({ matchId, setMatchId }) {
     }
   }
 
+
   return (
     <div className={styles.root}>
-      <div >
-        {overtime && (<div id="overlay" className={styles.overlay} onClick={(e) => onClickOutside(e)}>
-          <div className={styles.overlay_content}>
+      <div>
+        {(overtime && !duals) && (
+          <div id="overlay" className={styles.overlay} onClick={(e) => onClickOutside(e)}>
+            <div className={styles.overlay_content}>
+              <Overtime
+                matchId={matchId}
+                session={session}
+                team_one={team_one}
+                team_two={team_two}
+                setSavedMatches={setSavedMatches}
+                setSavedSession={setSavedSession}
+                setSession={setSession}
+                setOvertime={setOvertime}
+              />
+            </div>
 
-            <h1>Overtime!</h1>
-            <h2>Please Select the Overtime Winner</h2>
-            <button className={overtimeWinner === 1 ? styles.overtime_winner : styles.overtime_loser}
-              onClick={() => handleOvertimeWin(team_one.players[matchIndex])}
-            >
-              {team_one.players[matchIndex].name}
-            </button>
-            <button className={overtimeWinner === 2 ? styles.overtime_winner : styles.overtime_loser}
-              onClick={() => handleOvertimeWin(team_two.players[matchIndex])}
-            >
-              {team_two.players[matchIndex].name}
-            </button>
-            <button onClick={confirmOvertimeWin}>Confirm</button>
+          </div>)}
+        {(overtime && duals) && (
+          <div id="overlay" className={styles.overlay} onClick={(e) => onClickOutside(e)}>
+            <div className={styles.overlay_content}>
+              <DualsOvertime
+                matchId={matchId}
+                session={session}
+                team_one={team_one}
+                team_two={team_two}
+                setSavedMatches={setSavedMatches}
+                setSavedSession={setSavedSession}
+                setSession={setSession}
+                setOvertime={setOvertime}
+              />
+            </div>
 
-          </div>
-
-        </div>)}
+          </div>)}
         {session ?
           <div className={styles.flex}>
             <ActivePlayer

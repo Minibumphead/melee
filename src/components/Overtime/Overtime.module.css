@@ -1,0 +1,111 @@
+.overlay_content {
+  width: 60vw;
+  height: 60vh;
+  background-color: rgb(53, 130, 245, .9);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.button_box {
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  width: 40vw;
+  margin: 10px;
+}
+
+.section_col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.logo {
+  width: 45px;
+  height: 45px;
+  margin-right: 15px
+}
+
+.section button,
+.section_col button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+}
+
+.section button:hover {
+  background-color: green;
+}
+
+.large_button,
+.large_button_selected {
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.large_button_selected {
+  background-color: green;
+  font-weight: bold;
+  color: white;
+}
+
+.selected {
+  background-color: green;
+  font-weight: bold;
+  color: white;
+}
+
+.confirm,
+.disabled,
+.dangerous {
+  margin-top: 25px;
+  padding: 15px 0px;
+  border-radius: 8px;
+  width: 25%;
+  background-color: lightgreen;
+  cursor: pointer;
+}
+
+.dangerous {
+  background-color: red;
+}
+
+.disabled {
+  cursor: not-allowed;
+  background-color: lightgrey
+}
+
+.confirm:hover {
+  font-weight: bold;
+  background: green;
+  color: white;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 40vw;
+}
+
+.section_col button {
+  margin: 5px;
+}
+
+.row .section_col button {
+  width: 100%;
+  margin: 15px;
+}
