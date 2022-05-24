@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from 'react-router-dom'
 import styles from './ProgressButton.module.css'
 import SessionContext from "../../contexts/sessionContext";
+import hatchetIcon from './../../assets/icons/hatchet.png'
 
 export default function ProgressButton({
   matchId,
@@ -12,8 +13,6 @@ export default function ProgressButton({
   const [session, setSession] = useContext(SessionContext)
 
 
-  const startMatch = () => {
-  }
 
   const endSession = () => {
     setSession(prevSession => ({ ...prevSession, status: "FINISHED" }))
@@ -32,32 +31,6 @@ export default function ProgressButton({
       })
     }
 
-    // if (session.status === "READY_FOR_NEXT") {
-    //   if (matchId.current < 8) {
-    //     if (matchId.current === 3 || matchId.current === 7) {
-    //       setMatchId(prevId => {
-    //         return { current: prevId.current + 2 }
-    //       })
-
-    //     } else {
-    //       setMatchId(prevId => {
-    //         return { current: prevId.current + 1 }
-    //       })
-
-    //     }
-    //   }
-    //   throwCountPlayerOne.current = 0
-    //   throwCountPlayerTwo.current = 0
-    // } else if (session.status === "HALFTIME") {
-    //   throwCountPlayerOne.current = 0
-    //   throwCountPlayerTwo.current = 0
-    //   alert('halftime')
-    // } else if (session.status === "FINISHED") {
-    //   alert('Session completed')
-
-    // } else {
-    //   alert("Not Ready for next match")
-    // }
 
   }
   const handlePrev = () => {
@@ -75,21 +48,24 @@ export default function ProgressButton({
     }
   }
 
-
+  console.log(session.team_one.players[0])
 
   return (
     <>
-      {/* <button className={styles.next} onClick={() => console.log(matchId.current)}>print matchID</button> */}
       <div className={styles.flex}>
-        <button className={styles.next} onClick={() => handlePrev()}>Back</button>
-        <button className={styles.next} onClick={() => handleNext()}>Next</button>
-        <button className={styles.next} onClick={() => endSession()}>View Result</button>
+        {matchId.current < 10 &&
+          <button className={styles.next} onClick={() => handleNext()}>Next Match <img src={hatchetIcon} /> </button>
+        }
+        {
+          (matchId.current >= 1 && session.team_one.players[0].finished_match) &&
+          < button className={styles.next} onClick={() => endSession()}>View Result</button>
+        }
+        {
+          (matchId.current >= 1 && session.team_one.players[0].finished_match) &&
+          < button className={styles.next} onClick={() => handlePrev()}>Previous Match</button>
+        }
       </div>
-      <button className={styles.next} onClick={() => console.log(session)}>Log Session</button>
-
-
-      {/* <button className={styles.root} onClick={() => {
-        console.log(localStorage.clear())
-      }}>clear local storage</button> */}
     </>)
 }
+
+{/* <button className={styles.next} onClick={() => handlePrev()}>Back</button> */ }

@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import styles from './ScoringButton.module.css'
 
-export default function ScoringButton({ name, value, handleClick, player, status }) {
+export default function ScoringButton({ name, value, handleClick, player }) {
 
   const multiplePressButtons = ['0', 'Fault', 'Drop', 'Undo']
 
   const setDisabled = () => {
-    // if (status === "READY" || status === "SETUP") {
-    //   return true
-    // }
-
     if (multiplePressButtons.indexOf(name) >= 0) {
       return false
     } else if (player.scores.indexOf(name) !== -1) {

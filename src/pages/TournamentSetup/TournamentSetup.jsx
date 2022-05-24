@@ -20,7 +20,6 @@ export default function TournamentSetup() {
   }
 
   const t1 = teams[0]
-  console.log(t1.sumPoints())
   const handleSelect = (e) => {
     e.preventDefault()
     if (e.target.name === "teamOne" && e.target.value > 0) {
@@ -51,6 +50,7 @@ export default function TournamentSetup() {
       navigate('/play_matches', {
         state: {
           status: "M1",
+          half: 1,
           tournament_name: name,
           team_one: teamOne,
           team_two: teamTwo,

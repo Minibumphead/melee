@@ -1,14 +1,11 @@
 .root {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
 }
 
 .flex {
   display: flex;
   justify-content: center;
-  min-width: 1500px;
 }
 
 .player_one_section,
@@ -38,11 +35,12 @@
 .round {
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 45px;
-  height: 45px;
   font-size: 25px;
-  margin: 2.75px 0px;
+}
+
+.round:last-child {
+  margin-top: 12px;
 }
 
 .meta_rounds :last-child {
@@ -61,4 +59,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.overlay_content {
+  width: 60vw;
+  height: 60vh;
+  background-color: rgb(53, 130, 245, .9);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.overlay_content h1 {
+  color: white;
+  font-size: 55px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.resume {
+  font-size: 40px;
+  padding: 16px 32px;
+  margin-top: 25px;
 }

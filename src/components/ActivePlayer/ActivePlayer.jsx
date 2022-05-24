@@ -1,29 +1,25 @@
 import React from "react";
 import ScorePanel from "../ScorePanel.jsx/ScorePanel";
 import styles from './ActivePlayer.module.css';
+import { cleanScores, totalScores } from "../../helpers";
 
 export default function ActivePlayer({ player,
   handleClick,
   inputSelected,
+  opponent,
+  callKill, setCallKIll
 }) {
 
 
   const isDoubleParticipant = [3, 4, 8, 9].includes(player.id)
-
-  const scores = player.scores.map(
-    (score) => {
-      if (isNaN(parseInt(score))) {
-        return 0
-      } else return parseInt(score)
-
-    }
-  )
-  const sumPoints = scores.reduce((prev, curr) => prev + curr, 0)
+  const cleaned_scores_array = cleanScores(player.scores, opponent.scores)
+  const [total_player, total_opp] = totalScores(cleaned_scores_array)
+  const delta = total_player - total_opp
 
   return (
     <div className={isDoubleParticipant ? styles.root_border : styles.root} >
       <div className={styles.table_header}>
-        {player.name}
+        {player.name} ({delta > 0 ? `+${delta}` : delta})
       </div>
       <div className={styles.table_body}>
         {
@@ -31,7 +27,7 @@ export default function ActivePlayer({ player,
             <input
               key={idx}
               id={idx}
-              className={styles.score}
+              className={score.slice(0) > 7 ? styles.killshot_score : styles.score}
               value={score === "" ? "" : score.slice(0, 3)}
               onChange={() => { alert("Please use Number Pad") }}
               onClick={(e) => {
@@ -47,10 +43,12 @@ export default function ActivePlayer({ player,
           )
         }
       </div>
-      <div className={styles.total}>{sumPoints}</div>
+      <div className={styles.total}>{total_player}</div>
       <ScorePanel
         handleClick={handleClick}
         player={player}
+        callKill={callKill}
+        setCallKill={setCallKIll}
       />
     </div>)
 

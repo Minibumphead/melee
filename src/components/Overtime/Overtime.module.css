@@ -1,33 +1,50 @@
 .overlay_content {
   width: 60vw;
-  height: 60vh;
+  padding: 50px;
   background-color: rgb(53, 130, 245, .9);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 }
+
+.overlay_content h1 {
+  color: white;
+}
+
 
 .button_box {
   display: flex;
-  flex-direction: column;
+  min-height: 300px;
+
 }
 
 .section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   width: 40vw;
+
+}
+
+.section button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  border-radius: 12px;
+  padding: 8px 0px;
+  min-height: 60px;
   margin: 10px;
 }
+
+
 
 .section_col {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
 }
 
 .logo {
@@ -36,21 +53,20 @@
   margin-right: 15px
 }
 
-.section button,
 .section_col button {
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 320px;
+  height: 100%;
+  margin: 5px;
+  border-radius: 12px;
 }
 
-.section button:hover {
-  background-color: green;
-}
 
 .large_button,
 .large_button_selected {
-  width: 100%;
+  height: 100%;
   padding: 15px;
   display: flex;
   justify-content: center;
@@ -82,6 +98,14 @@
 
 .dangerous {
   background-color: red;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.dangerous:hover::before {
+  content: "Non reversible!! ";
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .disabled {
@@ -95,17 +119,10 @@
   color: white;
 }
 
-.row {
-  display: flex;
-  justify-content: space-between;
-  width: 40vw;
+button:focus {
+  border: 2px solid white;
 }
 
-.section_col button {
-  margin: 5px;
-}
-
-.row .section_col button {
-  width: 100%;
-  margin: 15px;
+button:hover {
+  cursor: pointer
 }

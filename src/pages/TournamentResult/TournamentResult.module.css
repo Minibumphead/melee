@@ -1,9 +1,12 @@
 .root {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   margin: 50px;
   align-items: center;
+  overflow-x: scroll;
+  padding-bottom: 25px;
 }
+
 
 .flex {
   display: flex;
@@ -27,6 +30,7 @@
   align-items: center;
   justify-content: center;
 }
+
 
 .col_player {
   min-width: 150px;

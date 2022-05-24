@@ -8,20 +8,29 @@ import { Overtime, DualsOvertime } from '../Overtime/Overtime'
 import { useLocalStorage, saveSession, saveSessionAfterDual, checkOvertime, checkDualsOvertime, getDisciplineFromId } from '../../helpers'
 
 
-export default function ScoreBoard({ matchId, setMatchId }) {
+function ScoreBoard({
+  session,
+  setSession,
+  matchId,
+  setMatchId,
+  throwCountPlayerOne,
+  throwCountPlayerTwo,
+  throwCountPartnerOne,
+  throwCountPartnerTwo,
+  savedSession,
+  setSavedSession
+
+}) {
+  const halftimeCount = useRef(0)
   const inputSelected = useRef(-1)
-  const throwCountPlayerOne = useRef(0)
-  const throwCountPartnerOne = useRef(0)
-  const throwCountPlayerTwo = useRef(0)
-  const throwCountPartnerTwo = useRef(0)
 
+
+  const [halftime, setHalftime] = useState(false)
   const [overtime, setOvertime] = useState(false)
-  const [overtimePoints] = useState([0, 0])
   const [savedMatches, setSavedMatches] = useLocalStorage("matches", [], useState)
-  const [savedSession, setSavedSession] = useLocalStorage("session", [], useState)
   const [duals, setDuals] = useState(false)
+  const [callKill, setCallKill] = useState(false)
 
-  const [session, setSession] = useContext(SessionContext)
   const { team_one, team_two } = session
   const matchIndex = matchId.current - 1
   const p1 = team_one.players[matchIndex]
@@ -31,8 +40,8 @@ export default function ScoreBoard({ matchId, setMatchId }) {
 
 
 
-
   useEffect(() => {
+    const half = (matchId.current <= 5 && halftimeCount.current === 0) ? 1 : 2
     if (matchId.current === 3 || matchId.current === 8) {
       setDuals(true)
     } else {
@@ -40,7 +49,7 @@ export default function ScoreBoard({ matchId, setMatchId }) {
     }
     // handle fetching from LS //
     if (JSON.parse(localStorage.getItem("session")) !== null) {
-      setSession(savedSession)
+      setSession(prevSession => ({ ...savedSession, half: half }))
       if (session.team_one.players[matchId.current - 1].finished_match ||
         savedSession.team_one.players[matchId.current - 1].finished_match) {
         throwCountPlayerOne.current = 5
@@ -65,18 +74,26 @@ export default function ScoreBoard({ matchId, setMatchId }) {
     }
 
 
+    setCallKill(false)
+
   }, [matchId.current])
 
 
 
+  useEffect(() => {
+    if (session.half === 2 && halftimeCount.current === 0) {
+      setHalftime(true)
+      halftimeCount.current += 1
+    }
 
-
+  }, [session.half])
 
 
 
 
 
   const handleScore = (e, player) => {
+    setCallKill(false)
     const isPartner = (player.id === 4 || player.id === 9)
     const noInputSelected = inputSelected.current < 0
     if (player.team_id === 1) {
@@ -188,7 +205,6 @@ export default function ScoreBoard({ matchId, setMatchId }) {
       if (finishedSingle) {
         const overtime = checkOvertime(p1, p2) // checks if scores are equal
         if (overtime) {
-
           saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
           setOvertime(overtime)
         } else {
@@ -198,13 +214,12 @@ export default function ScoreBoard({ matchId, setMatchId }) {
     }
     if (duals) {
       if (finishedDual) {
-
         const overtime = checkDualsOvertime(p1, p2, p1_partner, p2_partner) // checks if scores are equal
         if (overtime) {
           saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
           setOvertime(overtime)
         } else {
-          // saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+          saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
         }
       }
     }
@@ -280,6 +295,21 @@ export default function ScoreBoard({ matchId, setMatchId }) {
 
   return (
     <div className={styles.root}>
+      <ProgressButton
+        matchId={matchId}
+        setMatchId={setMatchId}
+      />
+      {
+        halftime ? <div className={styles.overlay} id="halftime">
+          <div className={styles.overlay_content}>
+            <h1>HALFTIME</h1>
+            <button
+              onClick={() => setHalftime(false)}
+              className={styles.resume}
+            >Resume</button>
+          </div>
+        </div> : null
+      }
       <div>
         {(overtime && !duals) && (
           <div id="overlay" className={styles.overlay} onClick={(e) => onClickOutside(e)}>
@@ -315,15 +345,22 @@ export default function ScoreBoard({ matchId, setMatchId }) {
           </div>)}
         {session ?
           <div className={styles.flex}>
+
             <ActivePlayer
+              callKill={callKill}
+              setCallKIll={setCallKill}
               player={p1}
+              opponent={p2}
               handleClick={handleClick}
               inputSelected={inputSelected}
             />
             {
               (matchId.current === 3 || matchId.current === 8) &&
               (<ActivePlayer
+                callKill={callKill}
+                setCallKIll={setCallKill}
                 player={p1_partner}
+                opponent={p2}
                 handleClick={handleClick}
                 inputSelected={inputSelected}
               />)
@@ -336,14 +373,20 @@ export default function ScoreBoard({ matchId, setMatchId }) {
               </div>
             </div>
             <ActivePlayer
+              callKill={callKill}
+              setCallKIll={setCallKill}
               player={p2}
+              opponent={p1}
               handleClick={handleClick}
               inputSelected={inputSelected}
             />
             {
               (matchId.current === 3 || matchId.current === 8) &&
               (<ActivePlayer matchId={matchId}
+                callKill={callKill}
+                setCallKIll={setCallKill}
                 player={p2_partner}
+                opponent={p1}
                 handleClick={handleClick}
                 inputSelected={inputSelected}
               />)
@@ -352,17 +395,13 @@ export default function ScoreBoard({ matchId, setMatchId }) {
           : 'loading'
         }
 
-        <ProgressButton
-          matchId={matchId}
-          setMatchId={setMatchId}
-          throwCountPlayerOne={throwCountPlayerOne}
-          throwCountPlayerTwo={throwCountPlayerTwo}
-          throwCountPartnerOne={throwCountPartnerOne}
-          throwCountPartnerTwo={throwCountPartnerTwo}
-        />
+
 
       </div>
     </div>
 
   )
 }
+
+
+export default ScoreBoard

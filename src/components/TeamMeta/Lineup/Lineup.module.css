@@ -6,14 +6,10 @@
   margin-bottom: 25px;
 }
 
-.root {
-  padding-left: 25px;
-}
+
 
 .root_reverse {
   direction: rtl;
-  padding-right: 25px;
-
 }
 
 .players_container {
@@ -23,6 +19,39 @@
 .header_row,
 .data_row {
   display: flex;
+  /* justify-content: left; */
+
+  justify-content: center;
+
+}
+
+.header_row--left {
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  /* justify-content: right; */
+  justify-content: center;
+}
+
+.data_row--right {
+
+  display: flex;
+  /* justify-content: right; */
+  justify-content: center;
+}
+
+.data_row--left {
+  display: flex;
+  /* justify-content: left; */
+  justify-content: center;
+}
+
+.header_row--right {
+  display: flex;
+  /* justify-content: left; */
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: center;
 }
 
 .row_item,
@@ -36,7 +65,6 @@
 }
 
 .row_item_col {
-  display: flex;
   flex-direction: column;
 }
 
@@ -45,8 +73,16 @@
   display: none;
 }
 
-.header_row {
-  font-size: 20px;
+
+
+
+.discipline {
   font-weight: bold;
+}
+
+.discipline:hover {
+  color: darkgreen;
+  cursor: pointer;
+  text-decoration: underline;
 
 }

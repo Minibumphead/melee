@@ -14,7 +14,7 @@ import SessionContext from "./contexts/sessionContext";
 const App = () => {
   return (
     <div className={styles.root}>
-      {/* <Header /> */}
+      <Header />
       <Router>
         <Routes>
 

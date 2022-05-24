@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import styles from './TournamentResult.module.css'
 import { ExportJsonCsv } from 'react-export-json-csv'
 import winIcon from './../../assets/icons/win.svg'
 import lostIcon from './../../assets/icons/lost.svg'
 import { getDisciplineFromId } from '../../helpers'
+import { useLocation } from 'react-router-dom'
+import { calculateMatchNumber } from '../../components/InformationHeader/InformationHeader'
 
 
 export default function Result() {
-  const [matchView, setMatchView] = useState(false)
+
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [matchView, setMatchView] = useState(true)
 
   const [sessionData, setSessionData] = useState([])
   const [exportDataTeamOne, setExportDataTeamOne] = useState([])
   const [exportDataTeamTwo, setExportDataTeamTwo] = useState([])
 
+
+
   useEffect(() => {
+    console.log('ran')
     const data = JSON.parse(localStorage.getItem('session'))
     setSessionData(data)
 
-
-
-  }, [])
+  }, [location.pathname])
 
 
 
@@ -55,9 +62,7 @@ export default function Result() {
       </div>)
   }
   const Match = ({ player, opponent }) => {
-    console.log(player)
 
-    console.log(opponent)
 
     return (
       <div className={styles.col}>
@@ -68,7 +73,7 @@ export default function Result() {
         </div>
         <div className={styles.flex}>
 
-          <div className={styles.bold}>discipline</div>
+          <div className={styles.bold}>{`Match ${calculateMatchNumber(player.id)} `}</div>
           <div className={styles.bold}>
             {getDisciplineFromId(player.id)}
           </div>
@@ -145,5 +150,8 @@ export default function Result() {
 
 
     <button onClick={toggleMatchView}>{matchView ? "Switch to Team View" : "Switch to Match View"} </button>
+    <button onClick={() => {
+      navigate('/play_matches', { state: { ...sessionData, half: 3 } })
+    }}>Back to Matchplay</button>
   </div>
 }

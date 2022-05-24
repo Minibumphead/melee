@@ -97,7 +97,7 @@ export const generatePlayers = (team_id) => {
 
 
 
-const cleanScores = (p1_scores, p2_scores) => {
+export const cleanScores = (p1_scores, p2_scores) => {
   const p1_temp = []
   const p2_temp = []
   p1_scores.forEach(score => {
@@ -117,7 +117,7 @@ const cleanScores = (p1_scores, p2_scores) => {
   return [p1_temp, p2_temp]
 }
 
-const totalScores = (scoresArray) => {
+export const totalScores = (scoresArray) => {
   const t1 = scoresArray[0].reduce((prev, curr) => prev + curr, 0)
   const t2 = scoresArray[1].reduce((prev, curr) => prev + curr, 0)
   return [t1, t2]
