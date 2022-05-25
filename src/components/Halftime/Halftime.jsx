@@ -22,6 +22,10 @@ export default function Halftime({ halftime, setHalftime }) {
   }
 
   const resumeTournament = () => {
+    if (!isReady()) {
+      alert("please select all players for the second half before continuing!")
+      return
+    }
     navigate('/play_matches', {
       state: {
         status: "M6",

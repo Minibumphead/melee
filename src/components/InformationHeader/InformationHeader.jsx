@@ -38,7 +38,7 @@ export default function InformationHeader({ session, matchId }) {
 
 
 
-
+  console.log(matchId.current)
 
 
   return (
@@ -60,7 +60,7 @@ export default function InformationHeader({ session, matchId }) {
         >
           {toggleLineup ? "Hide Lineup" : "Show Lineup"}
         </button>
-        <h2 className={styles.status_header}>Playing {session.half == 1 ? "First" : "Second"} Half</h2>
+        <h2 className={styles.status_header}>Playing {matchId.current <= 5 ? "First" : "Second"} Half</h2>
         <h2>{`Match ${calculateMatchNumber(matchId.current)}`} - {getDisciplineFromId(matchId.current)}</h2>
         {/* <h1>Time elapsed:</h1> */}
         <h3>
