@@ -10,11 +10,10 @@ import InformationHeader from '../../components/InformationHeader/InformationHea
 import { useNavigate } from 'react-router-dom'
 
 
-function MeleeGame() {
+function MeleeGame({ halftime, setHalftime }) {
 
   const [savedSession, setSavedSession] = useLocalStorage("session", [], useState)
   const { state } = useLocation()
-  console.log(state)
   const { team_one, team_two } = state
 
   const throwCountPlayerOne = useRef(0)
@@ -32,6 +31,15 @@ function MeleeGame() {
     date: state.date
   })
 
+  useEffect(() => {
+
+    setSavedSession(prevSession => ({
+      ...prevSession,
+      team_one: { ...prevSession.team_one, players: team_one.players },
+      team_two: { ...prevSession.team_two, players: team_two.players }
+    }))
+  }, [state])
+
 
 
   const [matchId, setMatchId] = useState({ current: 1 })
@@ -44,7 +52,7 @@ function MeleeGame() {
       <MatchContext.Provider value={[match, setMatch]}>
         <div className={styles.root}>
 
-          <InformationHeader session={session} matchId={matchId} />
+          <InformationHeader session={savedSession.points_sum ? savedSession : session} matchId={matchId} />
           {matchId !== undefined ?
             <ScoreBoard
               session={session}
@@ -57,6 +65,8 @@ function MeleeGame() {
               throwCountPartnerTwo={throwCountPartnerTwo}
               matchId={matchId}
               setMatchId={setMatchId}
+              halftime={halftime}
+              setHalftime={setHalftime}
             /> : <div>loading</div>
           }
 

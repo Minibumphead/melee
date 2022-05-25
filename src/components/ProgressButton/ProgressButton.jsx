@@ -7,6 +7,7 @@ import hatchetIcon from './../../assets/icons/hatchet.png'
 export default function ProgressButton({
   matchId,
   setMatchId,
+  setHalftime = { setHalftime }
 }) {
 
   const navigate = useNavigate()
@@ -26,6 +27,11 @@ export default function ProgressButton({
       })
 
     } else if (matchId.current < 10) {
+      if (matchId.current === 5) {
+        setHalftime(true)
+      } else if (matchId.current !== 5) {
+        setHalftime(false)
+      }
       setMatchId(prevId => {
         return { current: prevId.current + 1 }
       })
@@ -48,7 +54,6 @@ export default function ProgressButton({
     }
   }
 
-  console.log(session.team_one.players[0])
 
   return (
     <>

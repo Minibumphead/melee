@@ -10,10 +10,22 @@
 }
 
 .form_container {
+  flex: .8;
+
   padding: 25px;
-  min-width: 400px;
 }
 
+.meta {}
+
+.select__container {
+  display: flex;
+}
+
+
+.half {
+  flex: 1;
+  text-align: center;
+}
 
 .name_input {
   font-size: 30px;
@@ -29,11 +41,21 @@ label {
 }
 
 .select {
+  width: 100%;
   font-size: 35px;
   margin-left: 15px;
   border: none;
+  padding: 16px;
+  border: 2px solid grey;
+  border-radius: 8px;
+  flex: 1;
 }
 
+
+.select option {
+  font-size: 25px;
+
+}
 
 
 .start {

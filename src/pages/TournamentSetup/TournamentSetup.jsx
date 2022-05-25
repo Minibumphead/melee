@@ -86,71 +86,77 @@ export default function TournamentSetup() {
 
   return (<div className={styles.root}>
     <div className={styles.form_container}>
-      <h2>Tournament Setup</h2>
-      <h3>Date:  {getDate()}</h3>
-      <label htmlFor="name">Name
-        <input
-          name="name"
-          className={styles.name_input}
-          type="text"
-          placeholder='Enter the Tournament Name'
-          onChange={handleChange}
-          value={name}
-        /></label>
+      <div className={styles.meta}>
+        <h2>Tournament Setup</h2>
+        <h3>Date:  {getDate()}</h3>
+        <label htmlFor="name">Name
+          <input
+            name="name"
+            className={styles.name_input}
+            type="text"
+            placeholder='Enter the Tournament Name'
+            onChange={handleChange}
+            value={name}
+          /></label>
+      </div>
       <div>
 
-        <label htmlFor="teamOne">Team One
-          <select
-            name="teamOne"
-            className={styles.select}
-            type="select"
-            onChange={handleSelect}
-            value={teamOne ? teamOne.id : 0}
-          >
-            <option className={styles.disabled} value={0}>Select Team 1</option>
-            {
+        <div className={styles.select__container}>
+          <div className={styles.half}>
 
-              teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
-            }
-          </select>
-        </label>
-        <div>
-          {teamOne && !openTeamOne ? <button onClick={() => setOpenTeamOne(true)}>Show {teamOne.name} Players</button> : null}
-          {(teamOne && openTeamOne) ?
-            <Team
-              team={teamOne}
-              setTeam={setTeamOne}
-              setOpenTeam={setOpenTeamOne}
-            /> : null}
-        </div>
+            <label htmlFor="teamOne">
+              <select
+                name="teamOne"
+                className={styles.select}
+                type="select"
+                onChange={handleSelect}
+                value={teamOne ? teamOne.id : 0}
+              >
+                <option className={styles.disabled} value={0}>Select Team</option>
+                {
 
+                  teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
+                }
+              </select>
+            </label>
+            <div >
+              {/* {teamOne && !openTeamOne ? <button onClick={() => setOpenTeamOne(true)}>Show {teamOne.name} Players</button> : null} */}
+              {(teamOne && openTeamOne) ?
+                <Team
+                  team={teamOne}
+                  setTeam={setTeamOne}
+                  setOpenTeam={setOpenTeamOne}
+                /> : null}
+            </div>
+          </div>
 
+          <div className={styles.half}>
 
+            <label htmlFor="teamTwo">
+              <select
+                name="teamTwo"
+                className={styles.select}
+                type="select"
+                onChange={handleSelect}
+                value={teamTwo ? teamTwo.id : 0}
+              >
+                <option className={styles.disabled} value={0}>Select Team</option>
+                {
+                  teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
+                }
+              </select>
+            </label>
 
-
-        <label htmlFor="teamTwo">Team Two
-          <select
-            name="teamTwo"
-            className={styles.select}
-            type="select"
-            onChange={handleSelect}
-            value={teamTwo ? teamTwo.id : 0}
-          >
-            <option className={styles.disabled} value={0}>Select Team 2</option>
-            {
-              teams.map((team, idx) => <option key={idx} value={team.id}>{team.name}</option>)
-            }
-          </select>
-        </label>
-
-        {teamTwo && !openTeamTwo ? <button onClick={() => setOpenTeamTwo(true)}>Show {teamTwo.name} Players</button> : null}
-        <div>
-          {(teamTwo && openTeamTwo) ?
-            <Team
-              team={teamTwo}
-              setTeam={setTeamTwo}
-              setOpenTeam={setOpenTeamTwo}
-            /> : null}
+            {/* {teamTwo && !openTeamTwo ? <button onClick={() => setOpenTeamTwo(true)}>Show {teamTwo.name} Players</button> : null} */}
+            <div>
+              {(teamTwo && openTeamTwo) ?
+                <Team
+                  team={teamTwo}
+                  setTeam={setTeamTwo}
+                  setOpenTeam={setOpenTeamTwo}
+                /> : null}
+            </div>
+          </div>
         </div>
         <button className={isReady() ? styles.start : styles.disabled} onClick={startTournament}>Start Tournament</button>
       </div>

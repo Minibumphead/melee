@@ -78,7 +78,8 @@ export const generatePlayers = (team_id) => {
     const scores = ["", "", "", "", ""]
     const overtime_scores = []
     const id = i + 1
-    const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
+    // const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
+    const name = ""
     tempArr[i] = new Player(
       id,
       name,

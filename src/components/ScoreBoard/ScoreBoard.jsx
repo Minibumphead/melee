@@ -1,4 +1,6 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
+
+import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './ScoreBoard.module.css'
 
 import ProgressButton from '../ProgressButton/ProgressButton'
@@ -18,14 +20,17 @@ function ScoreBoard({
   throwCountPartnerOne,
   throwCountPartnerTwo,
   savedSession,
-  setSavedSession
+  setSavedSession,
+  halftime,
+  setHalftime
 
 }) {
+
+  const navigate = useNavigate()
   const halftimeCount = useRef(0)
   const inputSelected = useRef(-1)
 
 
-  const [halftime, setHalftime] = useState(false)
   const [overtime, setOvertime] = useState(false)
   const [savedMatches, setSavedMatches] = useLocalStorage("matches", [], useState)
   const [duals, setDuals] = useState(false)
@@ -81,15 +86,18 @@ function ScoreBoard({
 
 
   useEffect(() => {
-    if (session.half === 2 && halftimeCount.current === 0) {
-      setHalftime(true)
+
+    halftimeCount.current = 1
+    if (session.half === 2) {
       halftimeCount.current += 1
+      setMatchId({ current: 6 })
     }
 
-  }, [session.half])
+
+  }, [halftime])
 
 
-
+  console.log(halftimeCount.current)
 
 
   const handleScore = (e, player) => {
@@ -292,21 +300,33 @@ function ScoreBoard({
     }
   }
 
+  const handleNewPlayers = () => {
+    navigate('/halftime', {
+      state: {
+        status: "HALFTIME",
+        half: 2,
+        team_one: session.team_one,
+        team_two: session.team_two,
+      }
+    })
+
+  }
 
   return (
     <div className={styles.root}>
       <ProgressButton
+        setHalftime={setHalftime}
         matchId={matchId}
         setMatchId={setMatchId}
       />
       {
-        halftime ? <div className={styles.overlay} id="halftime">
+        (halftime) ? <div className={styles.overlay} id="halftime">
           <div className={styles.overlay_content}>
             <h1>HALFTIME</h1>
             <button
-              onClick={() => setHalftime(false)}
+              onClick={() => handleNewPlayers()}
               className={styles.resume}
-            >Resume</button>
+            >{"Select Second Half Players >"} </button>
           </div>
         </div> : null
       }
