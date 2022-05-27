@@ -184,10 +184,16 @@ const countWinPoints = (scoresArray, p1, p2) => {
   } else if (scoresArray[1] > scoresArray[0]) {
     tempArray[1] = 4
   } else if (scoresArray[1] === scoresArray[0]) {
-    if (p1.overtime_scores.length > p2.overtime_scores.length) {
+    if (countOvertimePoints(p1) > countOvertimePoints(p2)) {
       tempArray[0] = 4
-    } else if (p2.overtime_scores.length > p1.overtime_scores.length) {
+    } else if (countOvertimePoints(p2) > countOvertimePoints(p1)) {
       tempArray[1] = 4
+    } else if (countOvertimePoints(p1) === countOvertimePoints(p2)) {
+      if (p1.overtime_scores.length > p2.overtime_scores.length) {
+        tempArray[0] = 4
+      } else if (p2.overtime_scores.length > p1.overtime_scores.length) {
+        tempArray[1] = 4
+      }
     }
   }
   return tempArray
@@ -226,8 +232,18 @@ export const handleResetDualsOvertime = (
 
 }
 
+const countOvertimePoints = (player) => {
+  let count = 0
+  for (let i = 0; i < player.overtime_scores.length; i++) {
+    if (parseInt(player.overtime_scores[i]) === 8) {
+      count += 1
+    }
+  }
+  return count
+}
+
 export const saveOvertime = (
-  p1, p2, setSavedMatches, setSavedSession, setSession, session, option, setOvertime
+  p1, p2, setSavedMatches, setSavedSession, setSession, session, option, setOvertime, round
 ) => {
   if (option === 1) {
     p1.overtime_scores.push("8 OT")
@@ -240,13 +256,25 @@ export const saveOvertime = (
   } else if (option === 5) {
     p1.overtime_scores.push("8 OT")
     p2.overtime_scores.push("8 OT")
+  } else if (option === -1) {
+    p1.overtime_scores.push("0 OT")
+  } else if (option === -2) {
+    p2.overtime_scores.push("0 OT")
   }
 
-  if (p1.overtime_scores.length === p2.overtime_scores.length) {
 
-    saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
-  } else {
-    saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
+  if (p1.overtime_scores.length === 4 && p2.overtime_scores.length === 4) {
+    if (countOvertimePoints(p1) !== countOvertimePoints(p2)) {
+
+      setOvertime(false)
+
+    } else if (countOvertimePoints(p1) === countOvertimePoints(p2)) {
+      console.log('extended')
+    }
+  }
+
+  saveSession(p1, p2, setSavedMatches, setSavedSession, session, setSession)
+  if (p1.overtime_scores.length === 5 || p2.overtime_scores.length === 5) {
     setOvertime(false)
   }
 }
@@ -321,14 +349,15 @@ export const saveSession = (p1, p2, setSavedMatches, setSavedSession, session, s
 
   const cleaned_scores = cleanScores(p1.scores, p2.scores)
   const cleaned_overtime_scores = cleanScores(p1.overtime_scores, p2.overtime_scores)
-  console.log(cleaned_overtime_scores)
   const total_scores = totalScores(cleaned_scores)
   const s1 = countPointsForEights(cleaned_scores)
   const s2 = countPerfectMatch(total_scores)
   const s3 = countWinPoints(total_scores, p1, p2)
   const s4 = countPointsForEights(cleaned_overtime_scores)
-
   console.log(s4)
+
+
+
 
   p1.team_points = s1[0] + s2[0] + s3[0] + s4[0]
   p1.total_score = total_scores[0]
@@ -344,7 +373,6 @@ export const saveSession = (p1, p2, setSavedMatches, setSavedSession, session, s
   t1_vals[6][currentMatchId - 1] = p1.win
   const t1 = new Team(...t1_vals)
 
-  console.log(t1)
 
   const t2_vals = Object.values(team_two)
   t2_vals[4][currentMatchId - 1] = p2.team_points

@@ -38,7 +38,6 @@ export default function InformationHeader({ session, matchId }) {
 
 
 
-  console.log(matchId.current)
 
 
   return (

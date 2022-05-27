@@ -4,72 +4,121 @@ import { saveOvertime, saveDualsOvertime, handleResetOvertime, handleResetDualsO
 
 export function Overtime({ team_one, team_two, matchId, setSavedMatches, session, setSavedSession, setSession, setOvertime }) {
   const matchIndex = matchId.current - 1
-  const [round, setRound] = useState(1)
+  const [round, setRound] = useState({
+    team_one: 0,
+    team_two: 0
+  })
   const [option, setOption] = useState(0)
   const p1 = team_one.players[matchIndex]
   const p2 = team_two.players[matchIndex]
 
   const handleOvertime = () => {
+    console.log('ran')
+    if (option === 1 || option === 2 || option === -1) {
+      setRound({ ...round, team_one: round.team_one += 1 })
+    } else if (option === 3 || option === 4 || option === -2) {
+
+      setRound({ ...round, team_two: round.team_two += 1 })
+    }
     saveOvertime(p1, p2, setSavedMatches, setSavedSession, setSession, session, option, setOvertime)
-    setRound(round => round + 1)
   }
 
   const resetOvertime = () => {
     handleResetOvertime(p1, p2, setSavedMatches, setSavedSession, setSession, session)
-    setRound(1)
+    setRound({ team_one: 0, team_two: 0 })
     alert("The overtime score has been reset!")
   }
 
+  const countOvertimnePoints = (player) => {
+    let count = 0
+    for (let i = 0; i < player.overtime_scores.length; i++) {
+      if (parseInt(player.overtime_scores[i]) === 8) {
+        count += 1
+      }
+    }
+    return count
+  }
 
+
+  console.log(p1)
+  console.log(p2)
 
   return <div className={styles.overlay_content}>
-    <h1> {team_one.name} {team_one.players[matchIndex].team_points} : {team_two.players[matchIndex].team_points} {team_two.name} </h1>
-    <h1>Overtime! Round: {round}</h1>
+
+    <h1>Overtime</h1>
+    <h1>(attempts {round.team_one}) {team_one.name}  :  {team_two.name} ({round.team_two} attempts)</h1>
+    <h1>Score:</h1>
+    <h2> {team_one.name} {countOvertimnePoints(p1)} : {countOvertimnePoints(p2)} {team_two.name} </h2>
     <div className={styles.button_box}>
       <div className={styles.section}>
-        <button
+        {/* <button
           className={option === 5 ? styles.selected : null}
           onClick={() => setOption(5)}
-        >Tied overtime (+1pt each)</button>
-        <button
-          className={option === 1 ? styles.selected : null}
-          onClick={() => setOption(1)}
-        >
-          <img src={team_one.graphic} className={styles.logo} />Winner (Hit +1pt)
-        </button>
-        <button
+        >Tied overtime (+1pt each)</button> */}
+        {(round.team_one < 4) && (
+          <>
+            <button
+              className={option === 1 ? styles.selected : null}
+              onClick={() => setOption(1)}
+            >
+              <img src={team_one.graphic} className={styles.logo} />(Hit +1pt)
+            </button>
+            <button
+              className={option === -1 ? styles.selected : null}
+              onClick={() => setOption(-1)}
+            >
+              <img src={team_one.graphic} className={styles.logo} />(Miss)
+            </button>
 
-          className={option === 3 ? styles.selected : null}
-          onClick={() => setOption(3)}
+          </>)}
 
-        >
+        {(round.team_two < 4) && (
+          <>
+            <button
 
-          <img src={team_two.graphic} className={styles.logo} /> Winner (Hit +1pt)
-        </button>
+              className={option === 3 ? styles.selected : null}
+              onClick={() => setOption(3)}
+
+            >
+
+              <img src={team_two.graphic} className={styles.logo} />  (Hit +1pt)
+            </button>
+            <button
+              className={option === -2 ? styles.selected : null}
+              onClick={() => setOption(-2)}
+            >
+              <img src={team_two.graphic} className={styles.logo} />(Miss)
+            </button>
+
+          </>)}
 
 
-        <button
+        {
+          round.team_one === 4 && round.team_two === 4 && (
+            <>        <button
+              className={option === 2 ? styles.selected : null}
+              onClick={() => setOption(2)}
+            >
+              <img src={team_one.graphic} className={styles.logo} /> WSL Winner (Non-Hit)
+            </button>
+              <button
+                onClick={() => setOption(4)}
 
-          className={option === 2 ? styles.selected : null}
-          onClick={() => setOption(2)}
-        >
-          <img src={team_one.graphic} className={styles.logo} /> WSL Winner (Non-Hit)
-        </button>
-        <button
-          onClick={() => setOption(4)}
+                className={option === 4 ? styles.selected : null}
+              >
+                <img src={team_two.graphic} className={styles.logo} />WSL Winner (Non-Hit)
+              </button>
+            </>
 
-          className={option === 4 ? styles.selected : null}
-        >
-          <img src={team_two.graphic} className={styles.logo} />WSL Winner (Non-Hit)
-        </button>
+          )}
       </div>
     </div>
 
 
     <button
-      className={option > 0 ? styles.confirm : styles.disabled}
+      className={option !== 0 ? styles.confirm : styles.disabled}
       onClick={() => handleOvertime()}
-      disabled={!(option > 0)}
+      disabled={option === 0}
     >Confirm</button>
 
     <button onClick={resetOvertime}
@@ -78,7 +127,7 @@ export function Overtime({ team_one, team_two, matchId, setSavedMatches, session
     >reset overtime</button>
 
 
-  </div>
+  </div >
 }
 
 
@@ -184,7 +233,7 @@ export function DualsOvertime({ team_one, team_two, matchId, setSavedMatches, se
 
 
     <button
-      className={option > 0 ? styles.confirm : styles.disabled}
+      className={option !== 0 ? styles.confirm : styles.disabled}
       onClick={() => handleOvertime()}
       disabled={!(option > 0)}
     >Confirm</button>

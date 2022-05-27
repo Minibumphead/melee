@@ -97,7 +97,6 @@ function ScoreBoard({
   }, [halftime])
 
 
-  console.log(halftimeCount.current)
 
 
   const handleScore = (e, player) => {

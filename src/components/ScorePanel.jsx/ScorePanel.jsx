@@ -53,8 +53,8 @@ export default function ScorePanel({ handleClick, player, callKill, setCallKill 
           )}
           <div className={styles.row}>
             <ScoringButton name="0 K" value={0} handleClick={handleClick} player={player} />
-            <ScoringButton name="Drop" value={"Drop"} handleClick={handleClick} player={player} />
-            <ScoringButton name="Fault" value={"Fault"} handleClick={handleClick} player={player} />
+            <ScoringButton name="Drop K" value={"Drop"} handleClick={handleClick} player={player} />
+            <ScoringButton name="Fault K" value={"Fault"} handleClick={handleClick} player={player} />
             <ScoringButton name="Undo" value={"Undo"} handleClick={handleClick} player={player} />
           </div>
         </div>
