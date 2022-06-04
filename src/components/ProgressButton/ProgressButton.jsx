@@ -54,23 +54,22 @@ export default function ProgressButton({
     }
   }
 
-
+  console.log(session.team_one.players[0].finished_match)
   return (
     <>
       <div className={styles.flex}>
-        {matchId.current < 10 &&
-          <button className={styles.next} onClick={() => handleNext()}>Next Match <img src={hatchetIcon} /> </button>
-        }
         {
-          (matchId.current >= 1 && session.team_one.players[0].finished_match) &&
+          (matchId.current > 1) &&
+          < button className={styles.next} onClick={() => handlePrev()}>Previous Match</button>
+        }
+
+        {
+          (matchId.current > 1) &&
           < button className={styles.next} onClick={() => endSession()}>View Result</button>
         }
-        {
-          (matchId.current >= 1 && session.team_one.players[0].finished_match) &&
-          < button className={styles.next} onClick={() => handlePrev()}>Previous Match</button>
+        {matchId.current < 10 &&
+          <button disabled={!session.team_one.players[matchId.current - 1].finished_match} className={styles.next} onClick={() => handleNext()}>Next Match</button>
         }
       </div>
     </>)
 }
-
-{/* <button className={styles.next} onClick={() => handlePrev()}>Back</button> */ }

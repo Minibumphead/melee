@@ -78,8 +78,8 @@ export const generatePlayers = (team_id) => {
     const scores = ["", "", "", "", ""]
     const overtime_scores = []
     const id = i + 1
-    // const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
-    const name = ""
+    const name = `P${i + 1}${Math.floor(Math.random() * 100000)}`
+    // const name = ""
     tempArr[i] = new Player(
       id,
       name,
@@ -291,55 +291,47 @@ export const saveDualsOvertime = (
 ) => {
   if (option === 1) {
     p1.overtime_scores.push("8 OT")
-    p1_partner.overtime_scores.push("8 OT")
   } else if (option === 2) {
-    p1.overtime_scores.push("8 OT")
-    p1_partner.overtime_scores.push("0")
+    p1.overtime_scores.push("0 OT")
   } else if (option === 3) {
-    p1.overtime_scores.push("0")
-    p1_partner.overtime_scores.push("0")
+    p1_partner.overtime_scores.push("8 OT")
   } else if (option === 4) {
-    p2.overtime_scores.push("8 OT")
-    p2_partner.overtime_scores.push("8 OT")
+    p1_partner.overtime_scores.push("0 OT")
   } else if (option === 5) {
     p2.overtime_scores.push("8 OT")
-    p2_partner.overtime_scores.push("0")
   } else if (option === 6) {
-    p2.overtime_scores.push("0")
-    p2_partner.overtime_scores.push("0")
+    p2.overtime_scores.push("0 OT")
   } else if (option === 7) {
-    p1.overtime_scores.push("8 OT")
-    p1_partner.overtime_scores.push("0")
-    p2.overtime_scores.push("8 OT")
-    p2_partner.overtime_scores.push("0")
+    p2_partner.overtime_scores.push("8 OT")
   } else if (option === 8) {
-    p1.overtime_scores.push("8 OT")
-    p1_partner.overtime_scores.push("8 OT")
-    p2.overtime_scores.push("8 OT")
-    p2_partner.overtime_scores.push("8 OT")
+    p2_partner.overtime_scores.push("0 OT")
   } else if (option === 9) {
-    p1.overtime_scores.push("8 OT")
-    p1_partner.overtime_scores.push("8 OT")
-    p2.overtime_scores.push("8 OT")
+    p1.overtime_scores.push("0 OT")
   } else if (option === 10) {
-    p1.overtime_scores.push("8 OT")
-    p2.overtime_scores.push("8 OT")
-    p2_partner.overtime_scores.push("8 OT")
+    p2.overtime_scores.push("0 OT")
   }
 
   const len_t1 = p1.overtime_scores.length + p1_partner.overtime_scores.length
   const len_t2 = p2.overtime_scores.length + p2_partner.overtime_scores.length
-  if (len_t1 === len_t2) {
-    saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
-  } else {
-
-    saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+  if (len_t1 === 4 && len_t2 === 4) {
+    console.log(" not extended")
+    if (countOvertimePoints(p1) + countOvertimePoints(p1_partner) !== countOvertimePoints(p2) + countOvertimePoints(p2_partner)) {
+      setOvertime(false)
+    } else if (countOvertimePoints(p1) === countOvertimePoints(p2)) {
+      console.log('extended')
+    }
+  }
+  saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+  if (len_t1 === 5 || len_t2 === 5) {
     setOvertime(false)
   }
+  // if (len_t1 === len_t2) {
+  //   saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+  // } else {
 
-
-
-
+  //   saveSessionAfterDual(p1, p2, p1_partner, p2_partner, setSavedMatches, setSavedSession, session, setSession)
+  //   setOvertime(false)
+  // }
 }
 
 const temp_matches = []
@@ -448,23 +440,39 @@ const countPerfectDualsMatch = (total_score_array) => {
 
 
 const countDualWinPoints = (p1, p2, p1_partner, p2_partner, total_scores_array) => {
-  const overtime_scores_t1 = p1.overtime_scores.length + p1_partner.overtime_scores.length
-  const overtime_scores_t2 = p2.overtime_scores.length + p2_partner.overtime_scores.length
+  const cleaned_overtime_scores_t1 = cleanScores(p1.overtime_scores, p1_partner.overtime_scores)
+  const cleaned_overtime_scores_t2 = cleanScores(p2.overtime_scores, p2_partner.overtime_scores)
+
+  const overtimeEightsArrayt1 = countPointsForEights(cleaned_overtime_scores_t1)
+  const overtimeEightsArrayt2 = countPointsForEights(cleaned_overtime_scores_t2)
+
+  const sumOfEightsTeamOne = overtimeEightsArrayt1[0] + overtimeEightsArrayt1[1]
+  const sumOfEightsTeamTwo = overtimeEightsArrayt2[0] + overtimeEightsArrayt2[1]
+
   if (total_scores_array[0] > total_scores_array[1]) {
     return [4, 0]
   } else if (total_scores_array[0] < total_scores_array[1]) {
     return [0, 4]
   } else if (total_scores_array[0] === total_scores_array[1]) {
-    if (overtime_scores_t1 > overtime_scores_t2) {
+    if (sumOfEightsTeamOne > sumOfEightsTeamTwo) {
 
       return [4, 0]
-    } else if (overtime_scores_t2 > overtime_scores_t1) {
+    } else if (sumOfEightsTeamTwo > sumOfEightsTeamOne) {
       return [0, 4]
     }
-    else {
-      return [0, 0]
+    else if (sumOfEightsTeamOne === sumOfEightsTeamTwo) {
+      const length_t1 = p1.overtime_scores.length + p1_partner.overtime_scores.length
+      const length_t2 = p2.overtime_scores.length + p2_partner.overtime_scores.length
+      console.log(length_t1, length_t2)
+      if (length_t1 > length_t2) {
+        return [4, 0]
+      } else if (length_t2 > length_t1) {
+        return [0, 4]
+      } else {
+        console.log("kasdjfoasdhjgoisahdg")
+        return [0, 0]
+      }
     }
-
   }
 }
 
@@ -477,7 +485,7 @@ export const saveSessionAfterDual = (
   p2_partner,
   setSavedMatches,
   setSavedSession,
-  session, setSession) => {
+  session, setSession, option, setOvertime) => {
   const currentMatchId = p1.id
   const { team_one, team_two } = session
 
@@ -495,6 +503,8 @@ export const saveSessionAfterDual = (
   const pointsArrayt2 = countPointsForEights(cleaned_scores_t2)
   const overtimeEightsArrayt1 = countPointsForEights(cleaned_overtime_scores_t1)
   const overtimeEightsArrayt2 = countPointsForEights(cleaned_overtime_scores_t2)
+  console.log(overtimeEightsArrayt1)
+  console.log(overtimeEightsArrayt2)
 
   const s1t1 = pointsArrayt1[0] + pointsArrayt1[1]
   const s1t2 = pointsArrayt2[0] + pointsArrayt2[1]
