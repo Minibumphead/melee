@@ -5,8 +5,9 @@ import Result from './pages/TournamentResult/Result'
 import TournamentSetup from "./pages/TournamentSetup/TournamentSetup";
 import Header from './components/Header/Header'
 import Halftime from './components/Halftime/Halftime'
+import PlayerSelect from './components/PlayerSelect/PlayerSelect'
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 
 import styles from './App.css'
 import SessionContext from "./contexts/sessionContext";
@@ -15,6 +16,8 @@ import SessionContext from "./contexts/sessionContext";
 const App = () => {
 
   const [halftime, setHalftime] = useState(false)
+
+
   return (
     <div className={styles.root}>
       <Header />
@@ -25,6 +28,7 @@ const App = () => {
           <Route path="/play_matches" element={<MeleeGame halftime={halftime} setHalftime={setHalftime} />} />
           <Route path="/view_result" element={<Result />} />
           <Route path="/halftime" element={<Halftime halftime={halftime} setHalftime={setHalftime} />} />
+          <Route path="/overtime" element={<PlayerSelect halftime={halftime} setHalftime={setHalftime} />} />
 
         </Routes>
       </Router>

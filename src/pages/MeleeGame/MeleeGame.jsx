@@ -12,8 +12,10 @@ import { useNavigate } from 'react-router-dom'
 
 function MeleeGame({ halftime, setHalftime }) {
 
+
   const [savedSession, setSavedSession] = useLocalStorage("session", [], useState)
   const { state } = useLocation()
+  const navigate = useNavigate()
   const { team_one, team_two } = state
 
   const throwCountPlayerOne = useRef(0)
@@ -31,6 +33,7 @@ function MeleeGame({ halftime, setHalftime }) {
     date: state.date
   })
 
+
   useEffect(() => {
 
     setSavedSession(prevSession => ({
@@ -45,6 +48,11 @@ function MeleeGame({ halftime, setHalftime }) {
   const [matchId, setMatchId] = useState({ current: 1 })
   const [match, setMatch] = useState({})
 
+  const test = () => {
+    navigate('/overtime', {
+      state: { ...session }
+    })
+  }
 
 
   return (
@@ -71,6 +79,7 @@ function MeleeGame({ halftime, setHalftime }) {
           }
 
         </div>
+        <button onClick={() => test()}> test</button>
       </MatchContext.Provider>
     </SessionContext.Provider>
   )
