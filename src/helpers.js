@@ -1,3 +1,4 @@
+import React from 'react'
 import { months, Player, Team } from "./data"
 
 export function useLocalStorage(key, initialValue, useState) {
@@ -14,7 +15,6 @@ export function useLocalStorage(key, initialValue, useState) {
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       // If error also return initialValue
-      console.log(error);
       return initialValue;
     }
   });
@@ -122,6 +122,17 @@ export const totalScores = (scoresArray) => {
   const t1 = scoresArray[0].reduce((prev, curr) => prev + curr, 0)
   const t2 = scoresArray[1].reduce((prev, curr) => prev + curr, 0)
   return [t1, t2]
+}
+
+export const sumScoresArray = (scoresArray) => {
+  let count = 0
+  scoresArray.forEach(score => {
+    const value = parseInt(score)
+    if (!isNaN(value)) {
+      count += value
+    }
+  })
+  return count
 }
 
 export const checkOvertime = (p1, p2) => {

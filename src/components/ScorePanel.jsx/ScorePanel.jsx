@@ -4,10 +4,10 @@ import ScoringButton from "./ScoringButton";
 import SessionContext from "../../contexts/sessionContext";
 
 
-export default function ScorePanel({ handleClick, player, callKill, setCallKill }) {
+export default function ScorePanel({ handleClick, player, callKill }) {
   const [session, setSession] = useContext(SessionContext)
 
-  const isDualMatch = player.id === 3 || player.id === 4 || player.id === 8 || player.id === 9
+  const isDualMatch = (player.id === 3 || player.id === 4 || player.id === 8 || player.id === 9) && !(session.half === "pk")
 
 
 
@@ -59,15 +59,6 @@ export default function ScorePanel({ handleClick, player, callKill, setCallKill 
           </div>
         </div>
       }
-      <div className={styles.row}>
-        <div
-          className={styles.col + " " + styles.kill}
-          onClick={() => setCallKill(!callKill)}
-        > {
-            callKill ? "Cancel" : "Call Killshot"
-          }</div>
-      </div>
-
     </div >)
 
 }

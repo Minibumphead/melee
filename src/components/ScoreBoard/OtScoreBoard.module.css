@@ -1,0 +1,71 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+.middle__section {
+  padding: 8px;
+  display: flex;
+  border: 4px solid black;
+
+}
+
+.sidepanel__container {
+  flex: 1;
+
+}
+
+.sidepanel__container--right {
+  flex: 1;
+  direction: rtl;
+}
+
+.sidepanel {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  font-size: 25px;
+  padding: 16px;
+}
+
+.discipline,
+.name,
+.name--right,
+.discipline--right {
+  font-size: 24px;
+  margin: 4px;
+}
+
+.discipline--right {
+  margin-left: 15px;
+}
+
+.scores--right,
+.scores--left {
+  display: flex;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.discipline {
+  margin-right: 15px;
+}
+
+.scores--left p,
+.scores--right p {
+  margin-right: 8px;
+  border: 2px solid green;
+  padding: 4px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

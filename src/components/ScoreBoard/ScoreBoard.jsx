@@ -367,7 +367,7 @@ function ScoreBoard({
 
             <ActivePlayer
               callKill={callKill}
-              setCallKIll={setCallKill}
+              setCallKill={setCallKill}
               player={p1}
               opponent={p2}
               handleClick={handleClick}
@@ -377,7 +377,7 @@ function ScoreBoard({
               (matchId.current === 3 || matchId.current === 8) &&
               (<ActivePlayer
                 callKill={callKill}
-                setCallKIll={setCallKill}
+                setCallKill={setCallKill}
                 player={p1_partner}
                 opponent={p2}
                 handleClick={handleClick}
@@ -393,7 +393,7 @@ function ScoreBoard({
             </div>
             <ActivePlayer
               callKill={callKill}
-              setCallKIll={setCallKill}
+              setCallKill={setCallKill}
               player={p2}
               opponent={p1}
               handleClick={handleClick}
@@ -403,7 +403,7 @@ function ScoreBoard({
               (matchId.current === 3 || matchId.current === 8) &&
               (<ActivePlayer matchId={matchId}
                 callKill={callKill}
-                setCallKIll={setCallKill}
+                setCallKill={setCallKill}
                 player={p2_partner}
                 opponent={p1}
                 handleClick={handleClick}

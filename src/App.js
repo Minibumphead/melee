@@ -23,13 +23,11 @@ const App = () => {
       <Header />
       <Router>
         <Routes>
-
           <Route path="/" element={<TournamentSetup />} />
           <Route path="/play_matches" element={<MeleeGame halftime={halftime} setHalftime={setHalftime} />} />
           <Route path="/view_result" element={<Result />} />
           <Route path="/halftime" element={<Halftime halftime={halftime} setHalftime={setHalftime} />} />
           <Route path="/overtime" element={<PlayerSelect halftime={halftime} setHalftime={setHalftime} />} />
-
         </Routes>
       </Router>
     </div>

@@ -7,8 +7,10 @@ export default function ActivePlayer({ player,
   handleClick,
   inputSelected,
   opponent,
-  callKill, setCallKIll
+  callKill,
+  setCallKill
 }) {
+
 
 
   const isDoubleParticipant = [3, 4, 8, 9].includes(player.id)
@@ -48,8 +50,9 @@ export default function ActivePlayer({ player,
         handleClick={handleClick}
         player={player}
         callKill={callKill}
-        setCallKill={setCallKIll}
+        setCallKill={setCallKill}
       />
+      <button onClick={() => setCallKill(!callKill)} style={{ padding: "15px", color: "white", background: "black" }}>{!callKill ? "Call Kill" : "Cancel"}</button>
     </div>)
 
 }

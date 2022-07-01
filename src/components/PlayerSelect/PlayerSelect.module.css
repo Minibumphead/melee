@@ -6,14 +6,38 @@
 .team__container {
   display: flex;
   /* text-align: center; */
-  justify-content: center;
+  justify-content: space-around;
 }
 
 .half {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+select {
+  display: flex;
+  height: 55px;
+  width: 350px;
+  border: 1px solid grey;
+  border-radius: 8px;
+  margin-left: 15px;
+  font-size: 25px;
+  font-weight: bold
+}
+
+option {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold
 }
 
 
